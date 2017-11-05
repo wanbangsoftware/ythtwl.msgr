@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_notification_title">通知</string>
+    <string name="ui_notification_content">收到一条新的车辆动态</string>
+</resources>

@@ -20,6 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# 网易云信
 -dontwarn com.netease.**
 -keep class com.netease.** {*;}
 #如果你使用全文检索插件，需要加入

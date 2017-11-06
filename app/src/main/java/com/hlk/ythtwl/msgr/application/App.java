@@ -19,6 +19,7 @@ public class App extends Nim {
         super.onCreate();
         instance = this;
         AppCrashHandler.getInstance(this);
+        initializeNim();
     }
 
     private static App instance;

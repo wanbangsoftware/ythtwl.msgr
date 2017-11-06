@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_text_setting_notification">新消息通知</string>
+    <string name="ui_text_setting_sound_title">声音提醒</string>
+    <string name="ui_text_setting_vibration_title">震动提醒</string>
+    <string name="ui_text_setting_open">已开启</string>
+    <string name="ui_text_setting_closed">已关闭</string>
+</resources>

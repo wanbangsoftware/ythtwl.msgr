@@ -22,6 +22,7 @@ public class StringHelper {
         try {
             return App.app().getResources().getString(resId);
         } catch (Exception ignore) {
+            ignore.printStackTrace();
             return null;
         }
     }

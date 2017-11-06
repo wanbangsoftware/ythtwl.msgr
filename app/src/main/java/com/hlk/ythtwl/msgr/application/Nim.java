@@ -6,16 +6,16 @@ import android.graphics.Color;
 import android.os.Environment;
 import android.os.Parcelable;
 
-import com.hlk.ythtwl.msgr.core.Core;
+import com.hlk.ythtwl.msgr.R;
+import com.hlk.ythtwl.msgr.helper.LogHelper;
 import com.hlk.ythtwl.msgr.helper.NotificationHelper;
+import com.hlk.ythtwl.msgr.helper.PreferenceHelper;
 import com.hlk.ythtwl.msgr.helper.StringHelper;
 import com.hlk.ythtwl.msgr.helper.ToastHelper;
 import com.hlk.ythtwl.msgr.listener.OnMsgrEventListener;
-import com.hlk.ythtwl.msgr.ui.MainActivity;
-import com.hlk.ythtwl.msgr.R;
-import com.hlk.ythtwl.msgr.helper.LogHelper;
 import com.hlk.ythtwl.msgr.model.Json;
 import com.hlk.ythtwl.msgr.notification.Msgr;
+import com.hlk.ythtwl.msgr.ui.MainActivity;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallback;
@@ -44,9 +44,8 @@ import java.util.ArrayList;
  */
 public class Nim extends BAM {
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    protected void initializeNim() {
+        readNimMessageNotify();
         // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
         NIMClient.init(this, loginInfo(), options());
         if (shouldInit()) {
@@ -58,9 +57,35 @@ public class Nim extends BAM {
         }
     }
 
-    private SDKOptions options() {
-        SDKOptions options = new SDKOptions();
+    /**
+     * 声音、震动提醒
+     */
+    public static boolean soundFlag = false, vibrateFlab = false;
 
+    /**
+     * 读取本地设置的消息通知方式
+     */
+    public static void readNimMessageNotify() {
+        String sound = PreferenceHelper.get(R.string.preference_sound_flag, "");
+        String vibrate = PreferenceHelper.get(R.string.preference_vibrate_flag, "");
+        soundFlag = isEmpty(sound) || sound.equals("1");
+        vibrateFlab = isEmpty(vibrate) || vibrate.equals("1");
+    }
+
+    /**
+     * 重置 Nim 消息通知方式
+     */
+    public static void resetNimMessageNotify(boolean sound, boolean vibrate) {
+        soundFlag = sound;
+        vibrateFlab = vibrate;
+        PreferenceHelper.save(R.string.preference_sound_flag, (sound ? "1" : "0"));
+        PreferenceHelper.save(R.string.preference_vibrate_flag, (vibrate ? "1" : "0"));
+        NIMClient.updateStatusBarNotificationConfig(getNotificationConfig());
+    }
+
+    public static final String sound = "android.resource://com.hlk.ythtwl.msgr/raw/msg";
+
+    private static StatusBarNotificationConfig getNotificationConfig() {
         // 如果将新消息通知提醒托管给 SDK 完成，需要添加以下配置。否则无需设置。
         StatusBarNotificationConfig config = new StatusBarNotificationConfig();
         config.notificationEntrance = MainActivity.class; // 点击通知栏跳转到该Activity
@@ -69,9 +94,18 @@ public class Nim extends BAM {
         config.ledARGB = Color.GREEN;
         config.ledOnMs = 1000;
         config.ledOffMs = 1500;
+        // 是否需要震动
+        config.vibrate = vibrateFlab;
+        // 是否需要响铃
+        config.ring = soundFlag;
         // 通知铃声的uri字符串
-        config.notificationSound = "android.resource://com.netease.nim.demo/raw/msg";
-        options.statusBarNotificationConfig = config;
+        config.notificationSound = sound;
+        return config;
+    }
+
+    private SDKOptions options() {
+        SDKOptions options = new SDKOptions();
+        options.statusBarNotificationConfig = getNotificationConfig();
 
         // 配置保存图片，文件，log 等数据的目录
         // 如果 options 中没有设置这个值，SDK 会使用下面代码示例中的位置作为 SDK 的数据目录。
@@ -143,6 +177,7 @@ public class Nim extends BAM {
         }, true);
     }
 
+    @SuppressWarnings("unchecked")
     private void doLogin() {
         NIMClient.getService(AuthService.class).login(loginInfo()).setCallback(new RequestCallback<LoginInfo>() {
             @Override

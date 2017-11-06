@@ -6,12 +6,16 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
-import android.support.multidex.BuildConfig;
 import android.support.multidex.MultiDex;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
+import com.hlk.ythtwl.msgr.BuildConfig;
 import com.hlk.ythtwl.msgr.helper.LogHelper;
+import com.hlk.ythtwl.msgr.helper.StringHelper;
 
 import java.io.File;
 import java.util.Iterator;
@@ -107,6 +111,18 @@ public class Base extends Application {
      */
     public static boolean releasable() {
         return BuildConfig.BUILD_TYPE.equals("release");
+    }
+
+    /**
+     * Uri.fromFile
+     */
+    public static Uri getUriFromFile(Context context, String filePath) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            File tempFile = new File(filePath);
+            return FileProvider.getUriForFile(context, StringHelper.format("%s.fileProvider", BuildConfig.APPLICATION_ID), tempFile);
+        } else {
+            return Uri.fromFile(new File(filePath));
+        }
     }
 
     /**

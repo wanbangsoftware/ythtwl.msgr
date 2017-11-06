@@ -1,13 +1,8 @@
 package com.hlk.ythtwl.msgr.application;
 
-import android.Manifest;
-
 import com.hlk.hlklib.etc.Cryptography;
 import com.litesuits.orm.LiteOrm;
 import com.litesuits.orm.db.DataBaseConfig;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * <b>功能描述：</b><br />
@@ -41,13 +36,13 @@ public class Orm extends Base {
         String db = getCachePath(DB_DIR) + Cryptography.md5(dbName) + ".db";
         if (null == Orm) {
             if (initialize(db)) {
-                //log("database initialized at: " + db);
+                log("database initialized at: " + db);
             }
         } else {
             if (!Orm.getDataBaseConfig().dbName.equals(db)) {
                 Orm.close();
                 if (initialize(db)) {
-                    //log("database re-initialized at: " + db);
+                    log("database re-initialized at: " + db);
                 }
             }
         }

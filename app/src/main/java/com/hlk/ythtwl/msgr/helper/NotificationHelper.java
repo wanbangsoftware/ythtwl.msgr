@@ -1,13 +1,15 @@
 package com.hlk.ythtwl.msgr.helper;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.hlk.ythtwl.msgr.R;
+import com.hlk.ythtwl.msgr.application.App;
 import com.hlk.ythtwl.msgr.ui.MainActivity;
 
 /**
@@ -36,8 +38,11 @@ public class NotificationHelper {
     private NotificationHelper(Context context) {
         this.context = context;
         manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        builder = new NotificationCompat.Builder(context);
+        builder = new NotificationCompat.Builder(context, context.getString(R.string.app_name));
     }
+
+    private static final long[] vibrate = new long[]{0L, 100L, 100L, 200L};
+    private static final long[] mute = new long[]{0L};
 
     public void show(String title, String text, Intent extras) {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, ID, MainActivity.getIntent(context, extras), PendingIntent.FLAG_UPDATE_CURRENT);
@@ -47,8 +52,11 @@ public class NotificationHelper {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setOngoing(false)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setSmallIcon(R.mipmap.ic_launcher);
+                .setLights(Color.RED, 0, 0)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setVibrate(App.vibrateFlab ? vibrate : mute)
+                .setSound(App.soundFlag ? Uri.parse(App.sound) : null);
+
         manager.notify(ID, builder.build());
     }
 }

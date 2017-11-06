@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">@color/color_3cbaff</color>
-    <color name="colorPrimaryDark">@color/color_52a2fb</color>
+    <color name="colorPrimaryDark">@color/color_3cbaff</color>
     <color name="colorAccent">@color/color_ff4081</color>
 
     <color name="colorCaution">@color/color_db7763</color>
@@ -20,4 +20,8 @@
     <color name="buttonDialogActiveColor">@color/textColorHintLight</color>
     <color name="activeBorderColor">@color/colorPrimary</color>
     <color name="unreadFlag">@color/colorAccent</color>
+
+    <color name="colorLicenseYellow">@color/color_c98800</color>
+    <color name="colorLicenseBlue">@color/color_0043ec</color>
+    <color name="colorLicenseWhite">@android:color/white</color>
 </resources>

@@ -42,7 +42,7 @@ import java.util.ArrayList;
  * <b>修改人员：</b><br />
  * <b>修改备注：</b><br />
  */
-public class Nim extends Orm {
+public class Nim extends BAM {
 
     @Override
     public void onCreate() {

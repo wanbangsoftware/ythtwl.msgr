@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
+    android:orientation="horizontal">
+
+    <com.hlk.hlklib.lib.view.CorneredView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:elevation="3dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:cv_background="@android:color/white"
+        app:cv_background_active="@color/textColorHintLight"
+        app:cv_border_size="0dp"
+        app:cv_corner_size="5dp">
+
+        <com.hlk.hlklib.lib.view.CorneredView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            app:cv_active_border="@color/color_2c66a8"
+            app:cv_background="@android:color/white"
+            app:cv_background_type="border"
+            app:cv_border_size="3dp"
+            app:cv_corner_size="5dp"
+            app:cv_normal_border="@color/color_2c66a8">
+
+            <com.hlk.hlklib.lib.view.CorneredView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:cv_background="@color/color_2c66a8"
+                app:cv_background_active="@color/color_2c66a8"
+                app:cv_border_size="0dp"
+                app:cv_corner_size="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="鲁F•65276"
+                    android:textColor="@android:color/white" />
+            </com.hlk.hlklib.lib.view.CorneredView>
+        </com.hlk.hlklib.lib.view.CorneredView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="停车超时"
+                    android:textSize="@dimen/ui_base_text_size_small" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20分钟前"
+                    android:textColor="@color/textColorHint"
+                    android:textSize="@dimen/ui_base_text_size_little" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="自07:30停驶已超过50分钟"
+                android:textColor="@color/textColorHint"
+                android:textSize="@dimen/ui_base_text_size_little" />
+        </LinearLayout>
+
+    </com.hlk.hlklib.lib.view.CorneredView>
+</LinearLayout>

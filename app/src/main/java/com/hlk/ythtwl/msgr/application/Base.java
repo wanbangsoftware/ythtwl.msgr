@@ -11,6 +11,8 @@ import android.support.multidex.BuildConfig;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
+import com.hlk.ythtwl.msgr.helper.LogHelper;
+
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +28,12 @@ import java.util.List;
  * <b>修改备注：</b><br />
  */
 public class Base extends Application {
+
+    private static final String TAG = "App";
+
+    protected static void log(String text) {
+        LogHelper.log(TAG, text);
+    }
 
     /**
      * App是否转入后台运行

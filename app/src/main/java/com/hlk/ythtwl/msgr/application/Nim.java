@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Environment;
 import android.os.Parcelable;
 
+import com.google.gson.reflect.TypeToken;
 import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.helper.LogHelper;
 import com.hlk.ythtwl.msgr.helper.NotificationHelper;
@@ -221,13 +222,14 @@ public class Nim extends BAM {
                 // 在这里处理自定义通知。
                 String json = message.getContent();
                 if (!isEmpty(json)) {
-                    Msgr msg = Json.gson().fromJson(json, Msgr.class);
+                    Msgr msg = Json.gson().fromJson(json, new TypeToken<Msgr>() {
+                    }.getType());
                     if (null != msg) {
                         Msgr.save(msg);
                         if (isAppStayInBackground || !isAppOnForeground(Nim.this)) {
                             // 如果app已经隐藏到后台，则需要打开通过系统通知来提醒用户
                             Intent extra = new Intent().putExtra(MainActivity.EXTRA_NOTIFICATION, (Parcelable) msg);
-                            NotificationHelper.helper(Nim.this).show(getString(R.string.ui_notification_title), getString(R.string.ui_notification_content), extra);
+                            NotificationHelper.helper(Nim.this).show(getString(R.string.app_name), getString(R.string.ui_notification_content), extra);
                         }
                         //dispatchCallbacks();
                         dispatchEvents(msg);

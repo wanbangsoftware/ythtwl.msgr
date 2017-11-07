@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.orm.Fields;
 import com.litesuits.orm.db.annotation.Column;
+import com.litesuits.orm.db.annotation.PrimaryKey;
+import com.litesuits.orm.db.enums.AssignType;
 
 /**
  * <b>功能描述：</b><br />
@@ -28,6 +30,7 @@ public abstract class Model implements Parcelable {
         };
     }
 
+    @PrimaryKey(AssignType.BY_MYSELF)
     @Column(Fields.Id)
     private long id;
 

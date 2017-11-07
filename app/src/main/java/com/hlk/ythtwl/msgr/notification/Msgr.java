@@ -45,8 +45,7 @@ public class Msgr extends Model implements MsgAttachment {
     }
 
     public static List<Msgr> query() {
-        QueryBuilder<Msgr> builder = new QueryBuilder<>(Msgr.class)
-                .appendOrderDescBy(Fields.Id);
+        QueryBuilder<Msgr> builder = new QueryBuilder<>(Msgr.class).orderBy(Fields.Id);
         return new Dao<>(Msgr.class).query(builder);
     }
 

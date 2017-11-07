@@ -12,6 +12,7 @@ package com.hlk.ythtwl.msgr.orm;
  */
 public interface Fields {
     String Id = "id";
+    String _Id = "__id";
     String License = "license";
     String Latitude = "latitude";
     String Longitude = "longitude";

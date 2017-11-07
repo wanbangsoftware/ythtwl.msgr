@@ -3,6 +3,7 @@ package com.hlk.ythtwl.msgr.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.orm.Fields;
 import com.litesuits.orm.db.annotation.Column;
 
@@ -17,6 +18,15 @@ import com.litesuits.orm.db.annotation.Column;
  * <b>修改备注：</b><br />
  */
 public abstract class Model implements Parcelable {
+
+    public static Model getNothingMore() {
+        return new Model() {
+            @Override
+            public void setId(long id1) {
+                super.setId(R.string.ui_base_text_nothing_more);
+            }
+        };
+    }
 
     @Column(Fields.Id)
     private long id;

@@ -7,6 +7,7 @@
     android:orientation="horizontal">
 
     <com.hlk.hlklib.lib.view.CorneredView
+        android:id="@+id/ui_holder_view_track_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -15,7 +16,8 @@
         android:orientation="horizontal"
         android:padding="10dp"
         app:cv_background="@android:color/white"
-        app:cv_background_active="@color/textColorHintLight"
+        app:cv_background_active="@color/textColorHintLightLight"
+        app:cv_background_type="fill"
         app:cv_border_size="0dp"
         app:cv_corner_size="5dp">
 
@@ -40,6 +42,7 @@
                 app:cv_corner_size="4dp">
 
                 <TextView
+                    android:id="@+id/ui_holder_view_track_license"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="鲁F•65276"
@@ -60,6 +63,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/ui_holder_view_track_cause"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -67,6 +71,7 @@
                     android:textSize="@dimen/ui_base_text_size_small" />
 
                 <TextView
+                    android:id="@+id/ui_holder_view_track_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="20分钟前"
@@ -75,6 +80,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/ui_holder_view_track_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="自07:30停驶已超过50分钟"

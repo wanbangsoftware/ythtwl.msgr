@@ -20,6 +20,7 @@ public class App extends Nim {
         instance = this;
         AppCrashHandler.getInstance(this);
         initializeNim();
+        log("sha1:  " + sha1(this));
     }
 
     private static App instance;

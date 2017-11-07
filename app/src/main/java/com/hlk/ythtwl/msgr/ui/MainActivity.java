@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -19,6 +20,7 @@ import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.adapter.RecyclerViewAdapter;
 import com.hlk.ythtwl.msgr.application.App;
 import com.hlk.ythtwl.msgr.helper.SnackbarHelper;
+import com.hlk.ythtwl.msgr.helper.ToastHelper;
 import com.hlk.ythtwl.msgr.holderview.BaseViewHolder;
 import com.hlk.ythtwl.msgr.holderview.common.NothingMoreViewHolder;
 import com.hlk.ythtwl.msgr.holderview.listener.OnViewHolderElementClickListener;
@@ -70,8 +72,13 @@ public class MainActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SnackbarHelper.make(view).show("Replace with your own action");
-                //.setAction("Action", null).show();
+                Snackbar.make(view, "Snackbar展示，右边可以点击哦", Snackbar.LENGTH_LONG)
+                        .setAction("点击", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ToastHelper.make().showMsg("我被点了");
+                            }
+                        }).show();
             }
         });
     }
@@ -149,7 +156,7 @@ public class MainActivity extends BaseActivity {
     private OnViewHolderElementClickListener elementClickListener = new OnViewHolderElementClickListener() {
         @Override
         public void onClick(View view, int index) {
-
+            MapActivity.open(MainActivity.this, (Msgr) mAdapter.get(index));
         }
     };
 

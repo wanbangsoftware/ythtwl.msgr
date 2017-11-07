@@ -112,6 +112,7 @@ public class Msgr extends Model implements MsgAttachment {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        super.writeToParcel(parcel, i);
         parcel.writeString(license);
         parcel.writeDouble(latitude);
         parcel.writeDouble(longitude);

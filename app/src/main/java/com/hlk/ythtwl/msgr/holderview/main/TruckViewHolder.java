@@ -36,6 +36,8 @@ public class TruckViewHolder extends BaseViewHolder {
     private TextView timeView;
     @ViewId(R.id.ui_holder_view_track_description)
     private TextView descView;
+    @ViewId(R.id.ui_holder_view_track_unread)
+    private TextView unreadView;
 
     public TruckViewHolder(View itemView, Context activity) {
         super(itemView, activity);
@@ -45,6 +47,12 @@ public class TruckViewHolder extends BaseViewHolder {
     public void showContent(Msgr msgr) {
         licenseView.setText(msgr.getLicense());
         timeView.setText(Utils.formatTimeAgo(msgr.getId()));
+        unreadView.setVisibility(msgr.isUnread() ? View.VISIBLE : View.GONE);
+        if (msgr.isUnread()) {
+            // 未读的话，直接保存为已读
+            msgr.setIsNew(Msgr.Readable.READ);
+            Msgr.save(msgr);
+        }
     }
 
     @Click({R.id.ui_holder_view_track_layout})

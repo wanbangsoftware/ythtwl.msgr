@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="1dp"
+    android:layout_marginBottom="5dp"
     android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/ui_holder_view_track_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="20分钟前"
+        android:textColor="@color/textColorHint"
+        android:textSize="@dimen/ui_base_text_size_little" />
 
     <com.hlk.hlklib.lib.view.CorneredView
         android:id="@+id/ui_holder_view_track_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_below="@+id/ui_holder_view_track_time"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="3dp"
         android:elevation="3dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -57,27 +71,13 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/ui_holder_view_track_cause"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/ui_holder_view_track_cause"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="停车超时"
-                    android:textSize="@dimen/ui_base_text_size_small" />
-
-                <TextView
-                    android:id="@+id/ui_holder_view_track_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="20分钟前"
-                    android:textColor="@color/textColorHint"
-                    android:textSize="@dimen/ui_base_text_size_little" />
-            </LinearLayout>
+                android:singleLine="true"
+                android:text="停车超时"
+                android:textSize="@dimen/ui_base_text_size_small" />
 
             <TextView
                 android:id="@+id/ui_holder_view_track_description"
@@ -89,4 +89,17 @@
         </LinearLayout>
 
     </com.hlk.hlklib.lib.view.CorneredView>
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/ui_holder_view_track_unread"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ui_holder_view_track_time"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="8dp"
+        android:text="未读"
+        android:textColor="@color/colorCaution"
+        android:textSize="@dimen/ui_base_text_size_little"
+        android:translationZ="10dp" />
+</RelativeLayout>

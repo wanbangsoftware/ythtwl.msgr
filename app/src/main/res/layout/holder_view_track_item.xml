@@ -83,7 +83,7 @@
                 android:id="@+id/ui_holder_view_track_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="自07:30停驶已超过50分钟"
+                android:text="@string/ui_view_holder_main_truck_description"
                 android:textColor="@color/textColorHint"
                 android:textSize="@dimen/ui_base_text_size_little" />
         </LinearLayout>
@@ -94,11 +94,11 @@
         android:id="@+id/ui_holder_view_track_unread"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/ui_holder_view_track_time"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="8dp"
-        android:text="未读"
+        android:text="@string/ui_base_text_unread"
         android:textColor="@color/colorCaution"
         android:textSize="@dimen/ui_base_text_size_little"
         android:translationZ="10dp" />

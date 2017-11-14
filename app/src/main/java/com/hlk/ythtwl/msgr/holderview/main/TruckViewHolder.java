@@ -10,6 +10,7 @@ import com.hlk.hlklib.lib.inject.ViewUtility;
 import com.hlk.hlklib.lib.view.CorneredView;
 import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.etc.Utils;
+import com.hlk.ythtwl.msgr.helper.StringHelper;
 import com.hlk.ythtwl.msgr.holderview.BaseViewHolder;
 import com.hlk.ythtwl.msgr.notification.Msgr;
 
@@ -48,6 +49,9 @@ public class TruckViewHolder extends BaseViewHolder {
         licenseView.setText(msgr.getLicense());
         timeView.setText(Utils.formatTimeAgo(msgr.getId()));
         unreadView.setVisibility(msgr.isUnread() ? View.VISIBLE : View.GONE);
+        String time = msgr.getBegin();
+        time = isEmpty(time) ? "--:--" : Utils.format(time, "yyyy-MM-dd HH:mm:ss", "HH:mm");
+        descView.setText(StringHelper.getString(R.string.ui_view_holder_main_truck_description, time, msgr.getTimes() / 60));
         if (msgr.isUnread()) {
             // 未读的话，直接保存为已读
             msgr.setIsNew(Msgr.Readable.READ);

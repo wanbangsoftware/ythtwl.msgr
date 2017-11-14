@@ -51,7 +51,12 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onEvent(Msgr msgr) {
             if (null != mAdapter) {
-                mAdapter.add(msgr, mAdapter.getItemCount() - 1);
+                int index = mAdapter.indexOf(msgr);
+                if (index >= 0) {
+                    mAdapter.update(msgr);
+                } else {
+                    mAdapter.add(msgr, mAdapter.getItemCount() - 1);
+                }
             }
         }
     };

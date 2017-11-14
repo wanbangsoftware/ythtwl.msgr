@@ -88,6 +88,16 @@ public class Msgr extends Model implements MsgAttachment {
     @Column(Fields.Status)
     private int status;
     /**
+     * 开始停留时间
+     */
+    @Column(Fields.Begin)
+    private String begin;
+    /**
+     * 停留的时间长度
+     */
+    @Column(Fields.Times)
+    private long times;
+    /**
      * 是否新消息
      */
     @Column(Fields.IsNew)
@@ -103,6 +113,8 @@ public class Msgr extends Model implements MsgAttachment {
         latitude = in.readDouble();
         longitude = in.readDouble();
         status = in.readInt();
+        begin = in.readString();
+        times = in.readLong();
     }
 
     @Override
@@ -117,6 +129,8 @@ public class Msgr extends Model implements MsgAttachment {
         parcel.writeDouble(latitude);
         parcel.writeDouble(longitude);
         parcel.writeInt(status);
+        parcel.writeString(begin);
+        parcel.writeLong(times);
     }
 
     public static final Creator<Msgr> CREATOR = new Creator<Msgr>() {
@@ -166,6 +180,22 @@ public class Msgr extends Model implements MsgAttachment {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getBegin() {
+        return begin;
+    }
+
+    public void setBegin(String begin) {
+        this.begin = begin;
+    }
+
+    public long getTimes() {
+        return times;
+    }
+
+    public void setTimes(long times) {
+        this.times = times;
     }
 
     /**

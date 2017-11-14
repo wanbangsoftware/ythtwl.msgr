@@ -17,5 +17,7 @@ public interface Fields {
     String Latitude = "latitude";
     String Longitude = "longitude";
     String Status = "status";
+    String Begin = "beginAt";
+    String Times = "times";
     String IsNew = "isNew";
 }

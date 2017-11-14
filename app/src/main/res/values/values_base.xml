@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ui_base_text_nothing_more">后面没有了</string>
+    <string name="ui_base_text_unread">未读</string>
 </resources>

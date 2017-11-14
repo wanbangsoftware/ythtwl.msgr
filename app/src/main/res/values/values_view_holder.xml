@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_view_holder_main_truck_description" formatted="false">自%s停驶已超过%d分钟</string>
+</resources>

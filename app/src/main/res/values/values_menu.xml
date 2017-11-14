@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ui_menu_recycler_item">
+        <item>删除</item>
+    </string-array>
+</resources>

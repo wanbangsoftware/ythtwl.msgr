@@ -1,11 +1,14 @@
 package com.hlk.ythtwl.msgr.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -19,13 +22,13 @@ import com.hlk.hlklib.lib.inject.ViewUtility;
 import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.adapter.RecyclerViewAdapter;
 import com.hlk.ythtwl.msgr.application.App;
-import com.hlk.ythtwl.msgr.helper.SnackbarHelper;
 import com.hlk.ythtwl.msgr.helper.ToastHelper;
 import com.hlk.ythtwl.msgr.holderview.BaseViewHolder;
 import com.hlk.ythtwl.msgr.holderview.common.NothingMoreViewHolder;
 import com.hlk.ythtwl.msgr.holderview.listener.OnViewHolderElementClickListener;
 import com.hlk.ythtwl.msgr.holderview.main.TruckViewHolder;
 import com.hlk.ythtwl.msgr.listener.OnMsgrEventListener;
+import com.hlk.ythtwl.msgr.listener.OnRecyclerItemClickListener;
 import com.hlk.ythtwl.msgr.model.Model;
 import com.hlk.ythtwl.msgr.notification.Msgr;
 
@@ -68,6 +71,17 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         App.addMsgrEventListener(msgrEventListener);
         recyclerView.setLayoutManager(new CustomLinearLayoutManager(this));
+        recyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(recyclerView) {
+            @Override
+            public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+
+            }
+
+            @Override
+            public void onItemLongClick(RecyclerView.ViewHolder viewHolder) {
+                showPopupDialog(viewHolder.getAdapterPosition());
+            }
+        });
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +151,25 @@ public class MainActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showPopupDialog(final int index) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setItems(R.array.ui_menu_recycler_item, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                switch (item) {
+                    case 0:
+                        // 删除单个
+                        Msgr.delete(mAdapter.get(index).getId());
+                        mAdapter.remove(index);
+                        break;
+                    case 1:
+                        break;
+                }
+            }
+        });
+        builder.show();
     }
 
     private void initializeAdapter() {

@@ -19,6 +19,19 @@
             android:layout_height="match_parent"
             android:clickable="true" />
 
+        <TextView
+            android:id="@+id/ui_map_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent_40_white"
+            android:gravity="center_vertical"
+            android:minHeight="20dp"
+            android:padding="8dp"
+            android:text="地址："
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/ui_base_text_size_little"
+            android:translationZ="3dp" />
+
         <LinearLayout
             android:id="@+id/ui_map_center_pointer"
             android:layout_width="wrap_content"
@@ -42,4 +55,5 @@
         </LinearLayout>
 
     </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>

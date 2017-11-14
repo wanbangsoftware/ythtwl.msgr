@@ -6,12 +6,19 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.TextView;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdate;
 import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.CoordinateConverter;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.amap.api.services.geocoder.RegeocodeResult;
 import com.hlk.hlklib.lib.inject.ViewId;
 import com.hlk.hlklib.lib.inject.ViewUtility;
 import com.hlk.ythtwl.msgr.R;
@@ -40,6 +47,8 @@ public class MapActivity extends BaseActivity {
 
     @ViewId(R.id.ui_map_map_view)
     private MapView mapView;
+    @ViewId(R.id.ui_map_address)
+    private TextView addressView;
     private AMap aMap;
     @ViewId(R.id.ui_map_center_pointer)
     private View pointView;
@@ -91,11 +100,19 @@ public class MapActivity extends BaseActivity {
                 @Override
                 public void run() {
                     LatLng pos = new LatLng(msgr.getLatitude(), msgr.getLongitude());
-                    CameraUpdate update = CameraUpdateFactory.newLatLngZoom(pos, 15f);
+                    CoordinateConverter converter = new CoordinateConverter();
+                    // CoordType.GPS 待转换坐标类型
+                    converter.from(CoordinateConverter.CoordType.GPS);
+                    // sourceLatLng待转换坐标点 LatLng类型
+                    converter.coord(pos);
+                    // 执行转换操作
+                    final LatLng des = converter.convert();
+                    CameraUpdate update = CameraUpdateFactory.newLatLngZoom(des, 15f);
                     aMap.animateCamera(update, 300, new AMap.CancelableCallback() {
                         @Override
                         public void onFinish() {
                             //mAMap.animateCamera(CameraUpdateFactory.zoomTo(dftZoomLevel), duration(), null);
+                            tryReverseGeoCode(new LatLonPoint(des.latitude, des.longitude));
                         }
 
                         @Override
@@ -107,4 +124,37 @@ public class MapActivity extends BaseActivity {
             });
         }
     }
+
+    //***********************************反转地址服务
+    // 地址反转服务
+    protected GeocodeSearch mGeoCoder;
+
+    /**
+     * 反转编码地理位置
+     */
+    protected void tryReverseGeoCode(LatLonPoint location) {
+        if (null == mGeoCoder) {
+            // 创建GeoCoder实例对象
+            mGeoCoder = new GeocodeSearch(this);
+            // 设置查询结果监听者
+            mGeoCoder.setOnGeocodeSearchListener(onGeocodeSearchListener);
+        }
+        // 发起反地理编码请求(经纬度->地址信息)
+        RegeocodeQuery query = new RegeocodeQuery(location, 200, GeocodeSearch.AMAP);
+        mGeoCoder.getFromLocationAsyn(query);
+    }
+
+    private GeocodeSearch.OnGeocodeSearchListener onGeocodeSearchListener = new GeocodeSearch.OnGeocodeSearchListener() {
+
+        @Override
+        public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+            addressView.setText(getString(R.string.ui_map_address_view_text, regeocodeResult.getRegeocodeAddress().getFormatAddress()));
+        }
+
+        @Override
+        public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+
+        }
+    };
+
 }

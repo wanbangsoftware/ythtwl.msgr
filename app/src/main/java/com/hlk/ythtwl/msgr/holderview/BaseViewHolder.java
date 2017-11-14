@@ -85,7 +85,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     protected void startViewClickEffect(final View view) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationZ", 20, 0);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationZ", 10, 0);
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {

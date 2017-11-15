@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -57,9 +56,25 @@ public class MainActivity extends BaseActivity {
                 } else {
                     mAdapter.add(msgr, mAdapter.getItemCount() - 1);
                 }
+                smoothScrollToBottom(mAdapter.getItemCount() - 1);
             }
         }
     };
+
+    /**
+     * 列表滚动到最后一条记录
+     */
+    private void smoothScrollToBottom(final int position) {
+        if (position < 0) return;
+        if (null != recyclerView) {
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.smoothScrollToPosition(position);
+                }
+            }, 100);
+        }
+    }
 
     @ViewId(R.id.toolbar)
     private Toolbar toolbar;
@@ -188,6 +203,7 @@ public class MainActivity extends BaseActivity {
                 }
             }
             mAdapter.update(nothingMore);
+            smoothScrollToBottom(mAdapter.getItemCount() - 1);
         }
     }
 

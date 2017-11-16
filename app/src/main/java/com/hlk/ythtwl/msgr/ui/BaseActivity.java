@@ -1,11 +1,15 @@
 package com.hlk.ythtwl.msgr.ui;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.hlk.ythtwl.msgr.application.App;
 import com.hlk.ythtwl.msgr.helper.LogHelper;
+import com.hlk.ythtwl.msgr.helper.StringHelper;
 
 /**
  * <b>功能描述：</b>Activity 基类<br />
@@ -33,8 +37,29 @@ class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    /**
+     * 转到拨号界面，不直接拨打
+     */
+    public void dialPhone(String phone) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    /**
+     * 跳蛛拿到拨号界面并且直接拨打电话
+     */
+    @SuppressLint("MissingPermission")
+    public void dialPhoneDirectly(String phone) {
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
+        startActivity(intent);
+    }
+
     protected void log(String string) {
         LogHelper.log(getClass().getSimpleName(), string);
     }
 
+    protected static boolean isEmpty(String string) {
+        return StringHelper.isEmpty(string, true);
+    }
 }

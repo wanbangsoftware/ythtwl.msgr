@@ -1,9 +1,11 @@
 package com.hlk.ythtwl.msgr.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.hlk.hlklib.layoutmanager.CustomLinearLayoutManager;
 import com.hlk.hlklib.lib.inject.ViewId;
@@ -21,6 +24,7 @@ import com.hlk.hlklib.lib.inject.ViewUtility;
 import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.adapter.RecyclerViewAdapter;
 import com.hlk.ythtwl.msgr.application.App;
+import com.hlk.ythtwl.msgr.helper.SnackbarHelper;
 import com.hlk.ythtwl.msgr.helper.ToastHelper;
 import com.hlk.ythtwl.msgr.holderview.BaseViewHolder;
 import com.hlk.ythtwl.msgr.holderview.common.NothingMoreViewHolder;
@@ -30,12 +34,17 @@ import com.hlk.ythtwl.msgr.listener.OnMsgrEventListener;
 import com.hlk.ythtwl.msgr.listener.OnRecyclerItemClickListener;
 import com.hlk.ythtwl.msgr.model.Model;
 import com.hlk.ythtwl.msgr.notification.Msgr;
+import com.hlk.ythtwl.msgr.permission.MPermission;
+import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionDenied;
+import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionGranted;
+import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionNeverAskAgain;
 
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
     public static final String EXTRA_NOTIFICATION = "ythtwl.extra.notification";
+    private final int BASIC_PERMISSION_REQUEST_CODE = 100;
 
     public static Intent getIntent(Context context, Intent extras) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -115,6 +124,41 @@ public class MainActivity extends BaseActivity {
                         }).show();
             }
         });
+        requestBasicPermission();
+    }
+
+    /**
+     * 基本权限管理
+     */
+    private final String[] BASIC_PERMISSIONS = new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE
+    };
+
+    private void requestBasicPermission() {
+        MPermission.printMPermissionResult(true, this, BASIC_PERMISSIONS);
+        MPermission.with(MainActivity.this)
+                .setRequestCode(BASIC_PERMISSION_REQUEST_CODE)
+                .permissions(BASIC_PERMISSIONS)
+                .request();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        MPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+    }
+
+    @OnMPermissionGranted(BASIC_PERMISSION_REQUEST_CODE)
+    public void onBasicPermissionSuccess() {
+        MPermission.printMPermissionResult(false, this, BASIC_PERMISSIONS);
+    }
+
+    @OnMPermissionDenied(BASIC_PERMISSION_REQUEST_CODE)
+    @OnMPermissionNeverAskAgain(BASIC_PERMISSION_REQUEST_CODE)
+    public void onBasicPermissionFailed() {
+        SnackbarHelper.make(recyclerView).show(R.string.activity_main_permission_not_grant_complete);
+        MPermission.printMPermissionResult(false, this, BASIC_PERMISSIONS);
     }
 
     @Override

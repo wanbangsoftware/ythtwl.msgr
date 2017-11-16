@@ -19,5 +19,9 @@ public interface Fields {
     String Status = "status";
     String Begin = "beginAt";
     String Times = "times";
+    String DriverName1 = "driverName1";
+    String DriverPhone1 = "driverPhone1";
+    String DriverName2 = "driverName2";
+    String DriverPhone2 = "driverPhone2";
     String IsNew = "isNew";
 }

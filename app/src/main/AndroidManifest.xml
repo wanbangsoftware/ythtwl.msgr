@@ -3,6 +3,7 @@
     package="com.hlk.ythtwl.msgr">
 
     <!-- 权限声明 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 这个权限用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 这个权限用于访问GPS定位-->

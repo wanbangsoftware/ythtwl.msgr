@@ -2,4 +2,5 @@
 <resources>
     <string name="activity_title_map">地图</string>
     <string name="ui_map_address_view_text" formatted="false">地址：%s</string>
+    <string name="ui_map_driver_name">驾驶员：</string>
 </resources>

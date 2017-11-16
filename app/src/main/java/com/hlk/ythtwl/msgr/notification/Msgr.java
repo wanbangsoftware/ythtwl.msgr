@@ -97,6 +97,14 @@ public class Msgr extends Model implements MsgAttachment {
      */
     @Column(Fields.Times)
     private long times;
+    @Column(Fields.DriverName1)
+    private String name1;
+    @Column(Fields.DriverPhone1)
+    private String phone1;
+    @Column(Fields.DriverName2)
+    private String name2;
+    @Column(Fields.DriverPhone2)
+    private String phone2;
     /**
      * 是否新消息
      */
@@ -115,6 +123,10 @@ public class Msgr extends Model implements MsgAttachment {
         status = in.readInt();
         begin = in.readString();
         times = in.readLong();
+        name1 = in.readString();
+        phone1 = in.readString();
+        name2 = in.readString();
+        phone2 = in.readString();
     }
 
     @Override
@@ -131,6 +143,10 @@ public class Msgr extends Model implements MsgAttachment {
         parcel.writeInt(status);
         parcel.writeString(begin);
         parcel.writeLong(times);
+        parcel.writeString(name1);
+        parcel.writeString(phone1);
+        parcel.writeString(name2);
+        parcel.writeString(phone2);
     }
 
     public static final Creator<Msgr> CREATOR = new Creator<Msgr>() {
@@ -196,6 +212,38 @@ public class Msgr extends Model implements MsgAttachment {
 
     public void setTimes(long times) {
         this.times = times;
+    }
+
+    public String getName1() {
+        return name1;
+    }
+
+    public void setName1(String name1) {
+        this.name1 = name1;
+    }
+
+    public String getPhone1() {
+        return phone1;
+    }
+
+    public void setPhone1(String phone1) {
+        this.phone1 = phone1;
+    }
+
+    public String getName2() {
+        return name2;
+    }
+
+    public void setName2(String name2) {
+        this.name2 = name2;
+    }
+
+    public String getPhone2() {
+        return phone2;
+    }
+
+    public void setPhone2(String phone2) {
+        this.phone2 = phone2;
     }
 
     /**

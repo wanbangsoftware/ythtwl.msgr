@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="activity_main_press_again_to_exit">再按一次退出</string>
+    <string name="activity_main_permission_not_grant_complete">未全部授权，部分功能可能无法正常运行！</string>
 </resources>

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 
 import com.hlk.ythtwl.msgr.application.App;
 import com.hlk.ythtwl.msgr.helper.LogHelper;
@@ -61,5 +62,21 @@ class BaseActivity extends AppCompatActivity {
 
     protected static boolean isEmpty(String string) {
         return StringHelper.isEmpty(string, true);
+    }
+
+    /**
+     * 列表滚动到最后一条记录
+     */
+    protected void smoothScrollToBottom(final RecyclerView recyclerView, final int position) {
+        if (position < 0) return;
+        if (null != recyclerView) {
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.smoothScrollToPosition(position);
+                }
+            }, 100);
+        }
+
     }
 }

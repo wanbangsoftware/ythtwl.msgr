@@ -2,4 +2,5 @@
 <resources>
     <string name="ui_icon_dot">&#xe6e5;</string>
     <string name="ui_icon_user">&#xe617;</string>
+    <string name="ui_icon_caution">&#xe747;</string>
 </resources>

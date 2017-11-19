@@ -32,6 +32,16 @@ public interface RecycleAdapter<T> {
     void remove(T item);
 
     /**
+     * 重置指定index的内容
+     */
+    void replace(int index, T item);
+
+    /**
+     * 重置指定的内容
+     */
+    void replace(T from, T to);
+
+    /**
      * 在列表末尾添加一个item
      */
     void add(T item);
@@ -56,7 +66,9 @@ public interface RecycleAdapter<T> {
      */
     boolean exist(T item);
 
-    /**查找指定item的索引位置*/
+    /**
+     * 查找指定item的索引位置
+     */
     int indexOf(T item);
 
     /**

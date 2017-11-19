@@ -18,6 +18,7 @@ public class App extends Nim {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        kickTimes = 0;
         AppCrashHandler.getInstance(this);
         initializeNim();
         log("sha1:  " + sha1(this));

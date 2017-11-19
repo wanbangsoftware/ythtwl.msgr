@@ -147,6 +147,23 @@ public abstract class RecyclerViewAdapter<VH extends RecyclerView.ViewHolder, T>
     }
 
     @Override
+    public void replace(int index, T item) {
+        if (index >= 0 && index < innerList.size() - 1) {
+            innerList.set(index, item);
+            notifyItemChanged(index);
+        }
+    }
+
+    @Override
+    public void replace(T from, T to) {
+        int index = indexOf(from);
+        if (index >= 0) {
+            innerList.set(index, to);
+            notifyItemChanged(index);
+        }
+    }
+
+    @Override
     public void add(T item) {
         if (!exist(item)) {
             innerList.add(item);

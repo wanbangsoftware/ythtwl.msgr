@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -55,6 +56,8 @@ public class MapActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
+    @ViewId(R.id.toolbar)
+    private Toolbar toolbar;
     @ViewId(R.id.ui_map_map_view)
     private MapView mapView;
     @ViewId(R.id.ui_map_address)
@@ -81,7 +84,14 @@ public class MapActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         ViewUtility.bind(this);
+        setSupportActionBar(toolbar);
         mapView.onCreate(savedInstanceState);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     @Override

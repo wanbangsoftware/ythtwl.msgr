@@ -49,6 +49,16 @@ public class Msgr extends Model implements MsgAttachment {
         return new Dao<>(Msgr.class).query(builder);
     }
 
+    public static List<Msgr> queryTruck() {
+        QueryBuilder<Msgr> builder = new QueryBuilder<>(Msgr.class).groupBy(Fields.License);
+        return new Dao<>(Msgr.class).query(builder);
+    }
+
+    public static List<Msgr> query(String license) {
+        QueryBuilder<Msgr> builder = new QueryBuilder<>(Msgr.class).whereEquals(Fields.License, license).orderBy(Fields.Id);
+        return new Dao<>(Msgr.class).query(builder);
+    }
+
     public static void clear() {
         new Dao<>(Msgr.class).clear();
     }

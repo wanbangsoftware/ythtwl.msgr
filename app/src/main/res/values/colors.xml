@@ -21,7 +21,7 @@
     <color name="activeBorderColor">@color/colorPrimary</color>
     <color name="unreadFlag">@color/colorAccent</color>
 
-    <color name="colorLicenseYellow">@color/color_c98800</color>
+    <color name="colorLicenseYellow">@color/color_c8a503</color>
     <color name="colorLicenseBlue">@color/color_0043ec</color>
     <color name="colorLicenseWhite">@android:color/white</color>
 </resources>

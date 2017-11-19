@@ -16,7 +16,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.hlk.hlklib.layoutmanager.CustomLinearLayoutManager;
 import com.hlk.hlklib.lib.inject.ViewId;
@@ -29,22 +28,26 @@ import com.hlk.ythtwl.msgr.helper.ToastHelper;
 import com.hlk.ythtwl.msgr.holderview.BaseViewHolder;
 import com.hlk.ythtwl.msgr.holderview.common.NothingMoreViewHolder;
 import com.hlk.ythtwl.msgr.holderview.listener.OnViewHolderElementClickListener;
+import com.hlk.ythtwl.msgr.holderview.main.AlarmViewHolder;
 import com.hlk.ythtwl.msgr.holderview.main.TruckViewHolder;
 import com.hlk.ythtwl.msgr.listener.OnMsgrEventListener;
 import com.hlk.ythtwl.msgr.listener.OnRecyclerItemClickListener;
 import com.hlk.ythtwl.msgr.model.Model;
+import com.hlk.ythtwl.msgr.model.Truck;
 import com.hlk.ythtwl.msgr.notification.Msgr;
 import com.hlk.ythtwl.msgr.permission.MPermission;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionDenied;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionGranted;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionNeverAskAgain;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
     public static final String EXTRA_NOTIFICATION = "ythtwl.extra.notification";
-    private final int BASIC_PERMISSION_REQUEST_CODE = 100;
+    private static final int BASIC_PERMISSION_REQUEST_CODE = 100;
 
     public static Intent getIntent(Context context, Intent extras) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -65,25 +68,10 @@ public class MainActivity extends BaseActivity {
                 } else {
                     mAdapter.add(msgr, mAdapter.getItemCount() - 1);
                 }
-                smoothScrollToBottom(mAdapter.getItemCount() - 1);
+                smoothScrollToBottom(recyclerView, mAdapter.getItemCount() - 1);
             }
         }
     };
-
-    /**
-     * 列表滚动到最后一条记录
-     */
-    private void smoothScrollToBottom(final int position) {
-        if (position < 0) return;
-        if (null != recyclerView) {
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    recyclerView.smoothScrollToPosition(position);
-                }
-            }, 100);
-        }
-    }
 
     @ViewId(R.id.toolbar)
     private Toolbar toolbar;
@@ -243,24 +231,49 @@ public class MainActivity extends BaseActivity {
             List<Msgr> msgrs = Msgr.query();
             if (null != msgrs) {
                 for (Msgr msgr : msgrs) {
-                    mAdapter.update(msgr);
+                    Truck truck = new Truck();
+                    truck.setLicense(msgr.getLicense());
+                    int index = mAdapter.indexOf(truck);
+                    if (index >= 0) {
+                        truck = (Truck) mAdapter.get(index);
+                        truck.setCount(truck.getCount() + 1);
+                        truck.setUnread(truck.getUnread() + (msgr.isUnread() ? 1 : 0));
+                        truck.setLastTime(msgr.getId());
+                        mAdapter.notifyItemChanged(index);
+                    } else {
+                        index = mAdapter.indexOfLicense(msgr.getLicense());
+                        if (index >= 0) {
+                            truck.setCount(2);
+                            truck.setUnread(truck.getUnread() + (msgr.isUnread() ? 1 : 0));
+                            truck.setLastTime(msgr.getId());
+                            mAdapter.replace(index, truck);
+                        } else {
+                            mAdapter.update(msgr);
+                        }
+                    }
                 }
             }
             mAdapter.update(nothingMore);
-            smoothScrollToBottom(mAdapter.getItemCount() - 1);
         }
     }
 
     private OnViewHolderElementClickListener elementClickListener = new OnViewHolderElementClickListener() {
         @Override
         public void onClick(View view, int index) {
-            MapActivity.open(MainActivity.this, (Msgr) mAdapter.get(index));
+            switch (view.getId()) {
+                case R.id.ui_holder_view_truck_layout:
+                    TruckActivity.open(MainActivity.this, (Truck) mAdapter.get(index));
+                    break;
+                case R.id.ui_holder_view_alarm_layout:
+                    MapActivity.open(MainActivity.this, (Msgr) mAdapter.get(index));
+                    break;
+            }
         }
     };
 
     private class LicenseAdapter extends RecyclerViewAdapter<BaseViewHolder, Model> {
 
-        static final int VT_TRUCK = 0, VT_NOMORE = 1;
+        static final int VT_TRUCK = 0, VT_ALARM = 1, VT_NOMORE = 2;
 
         @Override
         public BaseViewHolder onCreateViewHolder(View itemView, int viewType) {
@@ -269,6 +282,11 @@ public class MainActivity extends BaseActivity {
                     TruckViewHolder tvh = new TruckViewHolder(itemView, MainActivity.this);
                     tvh.setOnViewHolderElementClickListener(elementClickListener);
                     return tvh;
+                case VT_ALARM:
+                    AlarmViewHolder avh = new AlarmViewHolder(itemView, MainActivity.this);
+                    avh.setOnViewHolderElementClickListener(elementClickListener);
+                    avh.setShowCautionIcon(false);
+                    return avh;
             }
             return new NothingMoreViewHolder(itemView, MainActivity.this);
         }
@@ -278,13 +296,18 @@ public class MainActivity extends BaseActivity {
             switch (viewType) {
                 case VT_NOMORE:
                     return R.layout.holder_view_nothing_more;
+                case VT_TRUCK:
+                    return R.layout.holder_view_truck_item;
             }
-            return R.layout.holder_view_track_item;
+            return R.layout.holder_view_alarm_item;
         }
 
         @Override
         public int getItemViewType(int position) {
-            if (get(position) instanceof Msgr) {
+            Model model = get(position);
+            if (model instanceof Msgr) {
+                return VT_ALARM;
+            } else if (model instanceof Truck) {
                 return VT_TRUCK;
             }
             return VT_NOMORE;
@@ -292,9 +315,27 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onBindHolderOfView(BaseViewHolder holder, int position, @Nullable Model item) {
-            if (holder instanceof TruckViewHolder) {
-                ((TruckViewHolder) holder).showContent((Msgr) item);
+            if (holder instanceof AlarmViewHolder) {
+                ((AlarmViewHolder) holder).showContent((Msgr) item);
+            } else if (holder instanceof TruckViewHolder) {
+                ((TruckViewHolder) holder).showContent((Truck) item);
             }
+        }
+
+        int indexOfLicense(String license) {
+            Iterator<Model> iterable = iterator();
+            int index = 0;
+            while (iterable.hasNext()) {
+                Model model = iterable.next();
+                if (model instanceof Msgr) {
+                    Msgr msgr = (Msgr) model;
+                    if (msgr.getLicense().equals(license)) {
+                        return index;
+                    }
+                }
+                index++;
+            }
+            return -1;
         }
 
         @Override

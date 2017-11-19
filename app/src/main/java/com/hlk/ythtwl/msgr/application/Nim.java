@@ -155,19 +155,26 @@ public class Nim extends BAM {
         return getResources().getDisplayMetrics().widthPixels / 2;
     }
 
+    protected static int kickTimes = 0;
+
     private void handleUserOnlineStatus() {
         NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(new Observer<StatusCode>() {
             public void onEvent(StatusCode status) {
                 LogHelper.log("NimApp", "User status changed to: " + status);
                 if (status.wontAutoLogin()) {
-                    if (StatusCode.typeOfValue(status.getValue()) == StatusCode.PWD_ERROR) {
+                    StatusCode sc = StatusCode.typeOfValue(status.getValue());
+                    if (sc == StatusCode.PWD_ERROR) {
                         ToastHelper.make(Nim.this).showMsg(R.string.ui_text_nim_pwd_error);
-                    } else if (StatusCode.typeOfValue(status.getValue()) == StatusCode.FORBIDDEN) {
+                    } else if (sc == StatusCode.FORBIDDEN) {
                         ToastHelper.make(Nim.this).showMsg(R.string.ui_text_nim_forbidden);
                     } else {
                         // 被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
                         ToastHelper.make(Nim.this).showMsg(R.string.ui_text_nim_kick_out);
-                        doLogin();
+                        if (kickTimes <= 5) {
+                            // 超过5次之后不再重新登录
+                            kickTimes++;
+                            doLogin();
+                        }
                     }
                 } else if (status.shouldReLogin()) {
                     if (StatusCode.typeOfValue(status.getValue()) == StatusCode.NET_BROKEN) {

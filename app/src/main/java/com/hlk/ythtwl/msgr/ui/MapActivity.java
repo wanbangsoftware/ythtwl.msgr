@@ -163,7 +163,7 @@ public class MapActivity extends BaseActivity {
     @OnMPermissionDenied(PHONE_PERMISSION_REQUEST_CODE)
     @OnMPermissionNeverAskAgain(PHONE_PERMISSION_REQUEST_CODE)
     public void onBasicPermissionFailed() {
-        SnackbarHelper.make(driver1).show(R.string.activity_main_permission_not_grant_complete);
+        SnackbarHelper.make(driver1).setText(R.string.activity_main_permission_not_grant_complete).show();
         MPermission.printMPermissionResult(false, this, PHONE_CALL_PERMISSIONS);
     }
 

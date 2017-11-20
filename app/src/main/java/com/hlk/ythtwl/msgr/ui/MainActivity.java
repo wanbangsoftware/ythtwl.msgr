@@ -23,6 +23,8 @@ import com.hlk.hlklib.lib.inject.ViewUtility;
 import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.adapter.RecyclerViewAdapter;
 import com.hlk.ythtwl.msgr.application.App;
+import com.hlk.ythtwl.msgr.helper.DialogHelper;
+import com.hlk.ythtwl.msgr.helper.SimpleDialogHelper;
 import com.hlk.ythtwl.msgr.helper.SnackbarHelper;
 import com.hlk.ythtwl.msgr.helper.ToastHelper;
 import com.hlk.ythtwl.msgr.holderview.BaseViewHolder;
@@ -40,7 +42,6 @@ import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionDenied;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionGranted;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionNeverAskAgain;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -61,15 +62,16 @@ public class MainActivity extends BaseActivity {
     private OnMsgrEventListener msgrEventListener = new OnMsgrEventListener() {
         @Override
         public void onEvent(Msgr msgr) {
-            if (null != mAdapter) {
-                int index = mAdapter.indexOf(msgr);
-                if (index >= 0) {
-                    mAdapter.update(msgr);
-                } else {
-                    mAdapter.add(msgr, mAdapter.getItemCount() - 1);
-                }
-                smoothScrollToBottom(recyclerView, mAdapter.getItemCount() - 1);
-            }
+            handleMsgr(msgr);
+//            if (null != mAdapter) {
+//                int index = mAdapter.indexOf(msgr);
+//                if (index >= 0) {
+//                    mAdapter.update(msgr);
+//                } else {
+//                    mAdapter.add(msgr, mAdapter.getItemCount() - 1);
+//                }
+//                smoothScrollToBottom(recyclerView, mAdapter.getItemCount() - 1);
+//            }
         }
     };
 
@@ -103,11 +105,11 @@ public class MainActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Snackbar展示，右边可以点击哦", Snackbar.LENGTH_LONG)
+                SnackbarHelper.make(view).setText("Snackbar展示，右边可以点击哦")
                         .setAction("点击", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                ToastHelper.make().showMsg("我被点了");
+                                ToastHelper.make().showMsg("点击被点了");
                             }
                         }).show();
             }
@@ -145,7 +147,7 @@ public class MainActivity extends BaseActivity {
     @OnMPermissionDenied(BASIC_PERMISSION_REQUEST_CODE)
     @OnMPermissionNeverAskAgain(BASIC_PERMISSION_REQUEST_CODE)
     public void onBasicPermissionFailed() {
-        SnackbarHelper.make(recyclerView).show(R.string.activity_main_permission_not_grant_complete);
+        SnackbarHelper.make(recyclerView).setText(R.string.activity_main_permission_not_grant_complete).show();
         MPermission.printMPermissionResult(false, this, BASIC_PERMISSIONS);
     }
 
@@ -212,9 +214,11 @@ public class MainActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int item) {
                 switch (item) {
                     case 0:
+                        // 删除整个车辆的消息
+                        warningDeleteHoleTruck(index);
                         // 删除单个
-                        Msgr.delete(mAdapter.get(index).getId());
-                        mAdapter.remove(index);
+                        //Msgr.delete(mAdapter.get(index).getId());
+                        //mAdapter.remove(index);
                         break;
                     case 1:
                         break;
@@ -222,6 +226,18 @@ public class MainActivity extends BaseActivity {
             }
         });
         builder.show();
+    }
+
+    private void warningDeleteHoleTruck(final int index) {
+        SimpleDialogHelper.init(this).show(R.string.activity_main_delete_hole_truck_msgs, R.string.ui_popup_dialog_confirm_text, R.string.ui_popup_dialog_cancel_text, new DialogHelper.OnDialogConfirmListener() {
+            @Override
+            public boolean onConfirm() {
+                Truck truck = (Truck) mAdapter.get(index);
+                Msgr.deleteLicense(truck.getLicense());
+                mAdapter.remove(index);
+                return true;
+            }
+        }, null);
     }
 
     private void initializeAdapter() {
@@ -257,12 +273,38 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private void handleMsgr(Msgr msgr) {
+        Truck truck = new Truck();
+        truck.setLicense(msgr.getLicense());
+        int index = mAdapter.indexOf(truck);
+        if (index >= 0) {
+            truck = (Truck) mAdapter.get(index);
+            truck.setCount(truck.getCount() + 1);
+            truck.setUnread(truck.getUnread() + (msgr.isUnread() ? 1 : 0));
+            truck.setLastTime(msgr.getId());
+            mAdapter.notifyItemChanged(index);
+        } else {
+            index = mAdapter.indexOfLicense(msgr.getLicense());
+            if (index >= 0) {
+                truck.setCount(2);
+                truck.setUnread(truck.getUnread() + (msgr.isUnread() ? 1 : 0));
+                truck.setLastTime(msgr.getId());
+                mAdapter.replace(index, truck);
+            } else {
+                mAdapter.add(msgr, mAdapter.getItemCount() - 1);
+            }
+        }
+    }
+
     private OnViewHolderElementClickListener elementClickListener = new OnViewHolderElementClickListener() {
         @Override
         public void onClick(View view, int index) {
             switch (view.getId()) {
                 case R.id.ui_holder_view_truck_layout:
-                    TruckActivity.open(MainActivity.this, (Truck) mAdapter.get(index));
+                    Truck truck = (Truck) mAdapter.get(index);
+                    truck.setUnread(0);
+                    mAdapter.notifyItemChanged(index);
+                    TruckActivity.open(MainActivity.this, truck);
                     break;
                 case R.id.ui_holder_view_alarm_layout:
                     MapActivity.open(MainActivity.this, (Msgr) mAdapter.get(index));

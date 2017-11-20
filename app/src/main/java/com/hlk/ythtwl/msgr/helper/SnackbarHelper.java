@@ -4,6 +4,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import java.lang.ref.SoftReference;
+import java.util.HashMap;
 
 /**
  * <b>功能描述：</b><br />
@@ -19,6 +20,10 @@ public class SnackbarHelper {
 
     private SoftReference<View> softReference;
 
+    private Snackbar snackbar;
+    private CharSequence text;
+    private HashMap<CharSequence, View.OnClickListener> events = new HashMap<>();
+
     private SnackbarHelper(View view) {
         softReference = new SoftReference<>(view);
     }
@@ -27,11 +32,36 @@ public class SnackbarHelper {
         return new SnackbarHelper(view);
     }
 
-    public void show(int res) {
-        show(StringHelper.getString(res));
+    public SnackbarHelper setText(int res) {
+        text = StringHelper.getString(res);
+        return this;
     }
 
-    public void show(String text) {
-        Snackbar.make(softReference.get(), text, Snackbar.LENGTH_LONG).show();
+    public SnackbarHelper setText(CharSequence text) {
+        this.text = text;
+        return this;
+    }
+
+    public SnackbarHelper setAction(CharSequence action, View.OnClickListener listener) {
+        if (!StringHelper.isEmpty(action.toString()) && null != listener) {
+            if (events.size() >= 1) {
+                throw new IllegalArgumentException("Only can set one action button.");
+            }
+            if (!events.containsKey(action)) {
+                events.put(action, listener);
+            }
+        }
+        return this;
+    }
+
+    public void show() {
+        Snackbar snackbar = Snackbar.make(softReference.get(), text, Snackbar.LENGTH_LONG);
+        if (!events.isEmpty()) {
+            CharSequence[] key = events.keySet().toArray(new CharSequence[events.size()]);
+            for (CharSequence cs : key) {
+                snackbar.setAction(cs, events.get(cs));
+            }
+        }
+        snackbar.show();
     }
 }

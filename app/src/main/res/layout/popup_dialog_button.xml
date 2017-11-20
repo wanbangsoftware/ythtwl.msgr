@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hlk.hlklib.lib.view.CorneredView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ui_custom_dialog_buttons"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cv_background="@android:color/white"
+    app:cv_border_size="0dp"
+    app:cv_left_bottom_corner="@dimen/ui_dialog_view_corner_size"
+    app:cv_right_bottom_corner="@dimen/ui_dialog_view_corner_size">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textColorHintLight" />
+
+    <com.hlk.hlklib.lib.view.CorneredButton
+        android:id="@+id/ui_dialog_button_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ui_dialog_button_height"
+        android:gravity="center"
+        android:text="@string/ui_popup_dialog_confirm_text"
+        app:active_color="@color/buttonDialogActiveColor"
+        app:left_bottom_corner_size="@dimen/ui_dialog_view_corner_size"
+        app:normal_color="@color/buttonDialogNormalColor"
+        app:right_bottom_corner_size="@dimen/ui_dialog_view_corner_size" />
+</com.hlk.hlklib.lib.view.CorneredView>

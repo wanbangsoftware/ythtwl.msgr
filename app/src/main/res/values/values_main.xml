@@ -2,4 +2,7 @@
 <resources>
     <string name="activity_main_press_again_to_exit">再按一次退出</string>
     <string name="activity_main_permission_not_grant_complete">未全部授权，部分功能可能无法正常运行！</string>
+    <string name="activity_main_delete_hole_truck_msgs">
+        <![CDATA[消息删除之后不能恢复。<br/>您确定要删除这辆车的所有消息吗？]]>
+    </string>
 </resources>

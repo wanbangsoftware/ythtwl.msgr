@@ -9,6 +9,7 @@ import com.hlk.ythtwl.msgr.orm.Tables;
 import com.litesuits.orm.db.annotation.Column;
 import com.litesuits.orm.db.annotation.Table;
 import com.litesuits.orm.db.assit.QueryBuilder;
+import com.litesuits.orm.db.assit.WhereBuilder;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 
 import java.util.List;
@@ -38,6 +39,11 @@ public class Msgr extends Model implements MsgAttachment {
         Dao<Msgr> dao = new Dao<>(Msgr.class);
         Msgr msg = dao.querySingle(Fields.Id, msgId);
         dao.delete(msg);
+    }
+
+    public static void deleteLicense(String license) {
+        WhereBuilder builder = new WhereBuilder(Msgr.class).where(Fields.License + " = ?", license);
+        new Dao<>(Msgr.class).delete(builder);
     }
 
     public static Msgr query(long msgId) {

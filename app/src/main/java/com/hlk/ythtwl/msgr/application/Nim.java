@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.os.Parcelable;
 
 import com.google.gson.reflect.TypeToken;
+import com.hlk.hlklib.etc.Cryptography;
 import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.helper.LogHelper;
 import com.hlk.ythtwl.msgr.helper.NotificationHelper;
@@ -32,6 +33,7 @@ import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * <b>功能描述：</b>网易云信application<br />
@@ -206,11 +208,12 @@ public class Nim extends BAM {
     }
 
     public String account() {
-        return releasable() ? "boss_user" : "development";
+        return releasable() ? getString(R.string.app_release_user_id) : "development";
     }
 
     private String token() {
-        return releasable() ? "7edb18ad781a0dfa7ea1bcc1da5ad802" : "759b74ce43947f5f4c91aeddc3e5bad3";
+        return Cryptography.md5(account()).toLowerCase(Locale.getDefault());
+        //releasable() ? "7edb18ad781a0dfa7ea1bcc1da5ad802" : "759b74ce43947f5f4c91aeddc3e5bad3";
     }
 
     private LoginInfo loginInfo() {

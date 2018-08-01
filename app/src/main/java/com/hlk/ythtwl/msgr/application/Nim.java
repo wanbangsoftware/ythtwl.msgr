@@ -31,6 +31,7 @@ import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
+import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -131,22 +132,12 @@ public class Nim extends BAM {
             }
 
             @Override
-            public int getDefaultIconResId() {
-                return R.mipmap.ic_launcher_transparent;
-            }
-
-            @Override
-            public Bitmap getTeamIcon(String tid) {
-                return null;
-            }
-
-            @Override
-            public Bitmap getAvatarForMessageNotifier(String account) {
-                return null;
-            }
-
-            @Override
             public String getDisplayNameForMessageNotifier(String account, String sessionId, SessionTypeEnum sessionType) {
+                return null;
+            }
+
+            @Override
+            public Bitmap getAvatarForMessageNotifier(SessionTypeEnum sessionType, String sessionId) {
                 return null;
             }
         };

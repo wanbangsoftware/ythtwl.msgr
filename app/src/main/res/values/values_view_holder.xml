@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_view_holder_main_truck_description" formatted="false">自%s停驶已超过%d分钟</string>
+    <string name="ui_view_holder_main_truck_description" formatted="false">自%s停车已超过%d分钟</string>
     <string name="ui_view_holder_main_truck_unread" formatted="false">(%d)未读</string>
     <string name="ui_view_holder_main_truck_count" formatted="false">%s%d条消息</string>
     <string name="ui_view_holder_main_truck_msg_merged">已合并显示消息</string>

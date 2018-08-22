@@ -232,9 +232,16 @@ public class MainActivity extends BaseActivity {
         SimpleDialogHelper.init(this).show(R.string.activity_main_delete_hole_truck_msgs, R.string.ui_popup_dialog_confirm_text, R.string.ui_popup_dialog_cancel_text, new DialogHelper.OnDialogConfirmListener() {
             @Override
             public boolean onConfirm() {
-                Truck truck = (Truck) mAdapter.get(index);
-                Msgr.deleteLicense(truck.getLicense());
-                mAdapter.remove(index);
+                Model model = mAdapter.get(index);
+                if (model instanceof Truck) {
+                    Truck truck = (Truck) model;
+                    Msgr.deleteLicense(truck.getLicense());
+                    mAdapter.remove(index);
+                } else {
+                    Msgr msgr = (Msgr) model;
+                    Msgr.delete(msgr.getId());
+                    mAdapter.remove(index);
+                }
                 return true;
             }
         }, null);

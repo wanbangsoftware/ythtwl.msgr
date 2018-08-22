@@ -4,6 +4,7 @@ import android.os.Parcel;
 
 import com.hlk.ythtwl.msgr.model.Dao;
 import com.hlk.ythtwl.msgr.model.Model;
+import com.hlk.ythtwl.msgr.model.Point;
 import com.hlk.ythtwl.msgr.orm.Fields;
 import com.hlk.ythtwl.msgr.orm.Tables;
 import com.litesuits.orm.db.annotation.Column;
@@ -12,6 +13,7 @@ import com.litesuits.orm.db.assit.QueryBuilder;
 import com.litesuits.orm.db.assit.WhereBuilder;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -121,6 +123,8 @@ public class Msgr extends Model implements MsgAttachment {
     private String name2;
     @Column(Fields.DriverPhone2)
     private String phone2;
+    @Column(Fields.StopPoints)
+    private ArrayList<Point> points;
     /**
      * 是否新消息
      */
@@ -143,6 +147,8 @@ public class Msgr extends Model implements MsgAttachment {
         phone1 = in.readString();
         name2 = in.readString();
         phone2 = in.readString();
+        points = new ArrayList<>();
+        in.readList(points, Point.class.getClassLoader());
     }
 
     @Override
@@ -163,6 +169,7 @@ public class Msgr extends Model implements MsgAttachment {
         parcel.writeString(phone1);
         parcel.writeString(name2);
         parcel.writeString(phone2);
+        parcel.writeList(points);
     }
 
     public static final Creator<Msgr> CREATOR = new Creator<Msgr>() {
@@ -260,6 +267,17 @@ public class Msgr extends Model implements MsgAttachment {
 
     public void setPhone2(String phone2) {
         this.phone2 = phone2;
+    }
+
+    public ArrayList<Point> getPoints() {
+        if (null == points) {
+            points = new ArrayList<>();
+        }
+        return points;
+    }
+
+    public void setPoints(ArrayList<Point> points) {
+        this.points = points;
     }
 
     /**

@@ -23,5 +23,6 @@ public interface Fields {
     String DriverPhone1 = "driverPhone1";
     String DriverName2 = "driverName2";
     String DriverPhone2 = "driverPhone2";
+    String StopPoints = "stopPoints";
     String IsNew = "isNew";
 }

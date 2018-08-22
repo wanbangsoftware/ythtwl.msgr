@@ -66,6 +66,10 @@ public class MapActivity extends BaseActivity {
     @ViewId(R.id.ui_map_center_pointer)
     private View pointView;
 
+    @ViewId(R.id.ui_map_stop_points)
+    private View stopPoints;
+    @ViewId(R.id.ui_map_stop_points_title)
+    private TextView stopPointTitle;
     @ViewId(R.id.ui_map_driver1)
     private View driver1;
     @ViewId(R.id.ui_map_driver1_name)
@@ -125,10 +129,13 @@ public class MapActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @Click({R.id.ui_map_call_phone1, R.id.ui_map_call_phone2})
+    @Click({R.id.ui_map_stop_points, R.id.ui_map_call_phone1, R.id.ui_map_call_phone2})
     private void elementClick(View view) {
-        CALL_TYPE = view.getId() == R.id.ui_map_call_phone1 ? 1 : 2;
-        requestPhoneCallPermission();
+        if (view.getId() == R.id.ui_map_stop_points) {
+        } else {
+            CALL_TYPE = view.getId() == R.id.ui_map_call_phone1 ? 1 : 2;
+            requestPhoneCallPermission();
+        }
     }
 
     /**
@@ -171,6 +178,8 @@ public class MapActivity extends BaseActivity {
         Intent intent = getIntent();
         final Msgr msgr = intent.getParcelableExtra(PARAM_MSGR);
         if (null != msgr) {
+            stopPoints.setVisibility(msgr.getPoints().size() > 0 ? View.VISIBLE : View.GONE);
+            toolbar.setTitle(getString(R.string.activity_title_map1, msgr.getLicense()));
             driver1.setVisibility(isEmpty(msgr.getName1()) ? View.GONE : View.VISIBLE);
             driver1Name.setText(msgr.getName1());
             driver1Phone.setText(msgr.getPhone1());
@@ -180,20 +189,20 @@ public class MapActivity extends BaseActivity {
             mapView.post(new Runnable() {
                 @Override
                 public void run() {
-                    LatLng pos = new LatLng(msgr.getLatitude(), msgr.getLongitude());
-                    CoordinateConverter converter = new CoordinateConverter();
+                    final LatLng pos = new LatLng(msgr.getLatitude(), msgr.getLongitude());
+                    //CoordinateConverter converter = new CoordinateConverter();
                     // CoordType.GPS 待转换坐标类型
-                    converter.from(CoordinateConverter.CoordType.GPS);
+                    //converter.from(CoordinateConverter.CoordType.GPS);
                     // sourceLatLng待转换坐标点 LatLng类型
-                    converter.coord(pos);
+                    //converter.coord(pos);
                     // 执行转换操作
-                    final LatLng des = converter.convert();
-                    CameraUpdate update = CameraUpdateFactory.newLatLngZoom(des, 15f);
+                    //final LatLng des = converter.convert();
+                    CameraUpdate update = CameraUpdateFactory.newLatLngZoom(pos, 15f);
                     aMap.animateCamera(update, 300, new AMap.CancelableCallback() {
                         @Override
                         public void onFinish() {
                             //mAMap.animateCamera(CameraUpdateFactory.zoomTo(dftZoomLevel), duration(), null);
-                            tryReverseGeoCode(new LatLonPoint(des.latitude, des.longitude));
+                            tryReverseGeoCode(new LatLonPoint(pos.latitude, pos.longitude));
                         }
 
                         @Override

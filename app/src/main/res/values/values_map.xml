@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="activity_title_map">地图</string>
+    <string name="activity_title_map1" formatted="false">停车点(%s)</string>
     <string name="ui_map_address_view_text" formatted="false">地址：%s</string>
     <string name="ui_map_driver_name">驾驶员：</string>
+    <string name="ui_map_stop_points_title" formatted="false">停车点(%d个)</string>
+    <string name="ui_map_stop_points_desc">查看停车记录</string>
 </resources>

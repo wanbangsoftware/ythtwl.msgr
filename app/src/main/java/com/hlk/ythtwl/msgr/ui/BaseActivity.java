@@ -25,6 +25,8 @@ import com.hlk.ythtwl.msgr.helper.StringHelper;
 
 class BaseActivity extends AppCompatActivity {
 
+    protected static final String PARAM_MSGR = "activity_param_msgr";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

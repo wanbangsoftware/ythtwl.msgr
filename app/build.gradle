@@ -65,7 +65,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
 
     // 网易云信基础功能 (必需)
-    implementation 'com.netease.nimlib:basesdk:5.0.0'
+    implementation 'com.netease.nimlib:basesdk:5.5.0'
 
     // 自用的控件集合
     implementation('com.github.hsiangleekwok:hlklib:1.0.6.3-SNAPSHOT') {

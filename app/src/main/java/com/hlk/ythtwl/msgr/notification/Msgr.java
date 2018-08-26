@@ -135,7 +135,7 @@ public class Msgr extends Model implements MsgAttachment {
         super();
     }
 
-    protected Msgr(Parcel in) {
+    private Msgr(Parcel in) {
         super(in);
         license = in.readString();
         latitude = in.readDouble();

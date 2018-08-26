@@ -27,6 +27,7 @@ import com.hlk.hlklib.lib.inject.ViewId;
 import com.hlk.hlklib.lib.inject.ViewUtility;
 import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.helper.SnackbarHelper;
+import com.hlk.ythtwl.msgr.helper.ToastHelper;
 import com.hlk.ythtwl.msgr.notification.Msgr;
 import com.hlk.ythtwl.msgr.permission.MPermission;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionDenied;
@@ -46,7 +47,6 @@ import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionNeverAskAgain;
 
 public class MapActivity extends BaseActivity {
 
-    private static final String PARAM_MSGR = "map_param_msgr";
     private static int CALL_TYPE = 1;
     private final int PHONE_PERMISSION_REQUEST_CODE = 100;
 
@@ -82,6 +82,8 @@ public class MapActivity extends BaseActivity {
     private TextView driver2Name;
     @ViewId(R.id.ui_map_driver2_phone)
     private TextView driver2Phone;
+
+    private Msgr mMsgr;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -132,6 +134,11 @@ public class MapActivity extends BaseActivity {
     @Click({R.id.ui_map_stop_points, R.id.ui_map_call_phone1, R.id.ui_map_call_phone2})
     private void elementClick(View view) {
         if (view.getId() == R.id.ui_map_stop_points) {
+            if (mMsgr.getPoints().size() <= 0) {
+                ToastHelper.make().showMsg(R.string.ui_map_stop_points_empty);
+            } else {
+                PointsActivity.open(this, mMsgr);
+            }
         } else {
             CALL_TYPE = view.getId() == R.id.ui_map_call_phone1 ? 1 : 2;
             requestPhoneCallPermission();
@@ -176,20 +183,21 @@ public class MapActivity extends BaseActivity {
 
     private void reducePosition() {
         Intent intent = getIntent();
-        final Msgr msgr = intent.getParcelableExtra(PARAM_MSGR);
-        if (null != msgr) {
-            stopPoints.setVisibility(msgr.getPoints().size() > 0 ? View.VISIBLE : View.GONE);
-            toolbar.setTitle(getString(R.string.activity_title_map1, msgr.getLicense()));
-            driver1.setVisibility(isEmpty(msgr.getName1()) ? View.GONE : View.VISIBLE);
-            driver1Name.setText(msgr.getName1());
-            driver1Phone.setText(msgr.getPhone1());
-            driver2.setVisibility(isEmpty(msgr.getName2()) ? View.GONE : View.VISIBLE);
-            driver2Name.setText(msgr.getName2());
-            driver2Phone.setText(msgr.getPhone2());
+        mMsgr = intent.getParcelableExtra(PARAM_MSGR);
+        if (null != mMsgr) {
+            stopPoints.setVisibility(mMsgr.getPoints().size() > 0 ? View.VISIBLE : View.GONE);
+            stopPointTitle.setText(getString(R.string.ui_map_stop_points_title, mMsgr.getPoints().size()));
+            toolbar.setTitle(getString(R.string.activity_title_map1, mMsgr.getLicense()));
+            driver1.setVisibility(isEmpty(mMsgr.getName1()) ? View.GONE : View.VISIBLE);
+            driver1Name.setText(mMsgr.getName1());
+            driver1Phone.setText(mMsgr.getPhone1());
+            driver2.setVisibility(isEmpty(mMsgr.getName2()) ? View.GONE : View.VISIBLE);
+            driver2Name.setText(mMsgr.getName2());
+            driver2Phone.setText(mMsgr.getPhone2());
             mapView.post(new Runnable() {
                 @Override
                 public void run() {
-                    final LatLng pos = new LatLng(msgr.getLatitude(), msgr.getLongitude());
+                    final LatLng pos = new LatLng(mMsgr.getLatitude(), mMsgr.getLongitude());
                     //CoordinateConverter converter = new CoordinateConverter();
                     // CoordType.GPS 待转换坐标类型
                     //converter.from(CoordinateConverter.CoordType.GPS);

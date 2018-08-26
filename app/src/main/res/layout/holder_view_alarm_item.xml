@@ -39,7 +39,7 @@
             android:id="@+id/ui_holder_view_alarm_caution"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ui_icon_caution"
+            android:text="@string/ui_icon_caution_oval"
             android:textColor="@color/colorCaution"
             android:textSize="@dimen/ui_base_text_size_max"
             android:visibility="gone" />

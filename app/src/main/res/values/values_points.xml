@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_title_points" formatted="false">%s停车点</string>
+    <string name="ui_stop_point_date_fmt">yyyy年MM月dd日</string>
+    <string name="ui_stop_point_time_fmt">HH:mm:ss</string>
+</resources>

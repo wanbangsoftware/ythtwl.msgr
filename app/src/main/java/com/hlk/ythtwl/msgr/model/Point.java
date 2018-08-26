@@ -1,6 +1,6 @@
 package com.hlk.ythtwl.msgr.model;
 
-import java.io.Serializable;
+import android.os.Parcel;
 
 /**
  * <b>功能描述：</b><br />
@@ -12,7 +12,42 @@ import java.io.Serializable;
  * <b>修改人员：</b><br />
  * <b>修改备注：</b><br />
  */
-public class Point implements Serializable {
+public class Point extends Model {
+
+    public Point() {
+        super();
+    }
+
+    private Point(Parcel parcel) {
+        super(parcel);
+        lng = parcel.readDouble();
+        lat = parcel.readDouble();
+        stop = parcel.readLong();
+        restart = parcel.readLong();
+        len = parcel.readLong();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        super.writeToParcel(parcel, i);
+        parcel.writeDouble(lng);
+        parcel.writeDouble(lat);
+        parcel.writeLong(stop);
+        parcel.writeLong(restart);
+        parcel.writeLong(len);
+    }
+
+    public static final Creator<Point> CREATOR = new Creator<Point>() {
+        @Override
+        public Point createFromParcel(Parcel source) {
+            return new Point(source);
+        }
+
+        @Override
+        public Point[] newArray(int size) {
+            return new Point[size];
+        }
+    };
 
     private double lng, lat;
     private long stop, restart, len;

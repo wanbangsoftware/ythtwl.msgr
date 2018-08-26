@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ui_icon_dot">&#xe6e5;</string>
-    <string name="ui_icon_user">&#xe617;</string>
-    <string name="ui_icon_caution">&#xe747;</string>
+    <string name="ui_icon_caution_oval">&#xe747;</string>
+    <string name="ui_icon_caution_triangle">&#xe640;</string>
+    <string name="ui_icon_delete">&#xe602;</string>
+    <string name="ui_icon_time">&#xe6e6;</string>
+    <string name="ui_icon_stop">&#xe70f;</string>
+    <string name="ui_icon_waiting">&#xe60c;</string>
+    <string name="ui_icon_running">&#xe6e7;</string>
+    <string name="ui_icon_map">&#xe68f;</string>
 </resources>

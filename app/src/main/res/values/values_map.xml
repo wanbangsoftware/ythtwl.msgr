@@ -6,4 +6,5 @@
     <string name="ui_map_driver_name">驾驶员：</string>
     <string name="ui_map_stop_points_title" formatted="false">停车点(%d个)</string>
     <string name="ui_map_stop_points_desc">查看停车记录</string>
+    <string name="ui_map_stop_points_empty">没有停车记录</string>
 </resources>

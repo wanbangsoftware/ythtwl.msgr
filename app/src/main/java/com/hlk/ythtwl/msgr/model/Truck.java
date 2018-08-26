@@ -22,7 +22,7 @@ public class Truck extends Model {
         super();
     }
 
-    protected Truck(Parcel in) {
+    private Truck(Parcel in) {
         super(in);
         license = in.readString();
         count = in.readInt();

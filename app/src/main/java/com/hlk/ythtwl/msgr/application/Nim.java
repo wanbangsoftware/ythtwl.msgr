@@ -16,6 +16,7 @@ import com.hlk.ythtwl.msgr.helper.StringHelper;
 import com.hlk.ythtwl.msgr.helper.ToastHelper;
 import com.hlk.ythtwl.msgr.listener.OnMsgrEventListener;
 import com.hlk.ythtwl.msgr.model.Json;
+import com.hlk.ythtwl.msgr.model.Point;
 import com.hlk.ythtwl.msgr.notification.Msgr;
 import com.hlk.ythtwl.msgr.ui.MainActivity;
 import com.netease.nimlib.sdk.NIMClient;
@@ -228,6 +229,12 @@ public class Nim extends BAM {
                     Msgr msg = Json.gson().fromJson(json, new TypeToken<Msgr>() {
                     }.getType());
                     if (null != msg) {
+                        if (msg.getPoints().size() > 0) {
+                            for (Point point : msg.getPoints()) {
+                                // id
+                                point.setId(System.currentTimeMillis() + point.getStop());
+                            }
+                        }
                         Msgr.save(msg);
                         if (isAppStayInBackground || !isAppOnForeground(Nim.this)) {
                             // 如果app已经隐藏到后台，则需要打开通过系统通知来提醒用户

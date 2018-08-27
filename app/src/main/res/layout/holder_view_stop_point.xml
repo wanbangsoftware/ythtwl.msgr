@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ui_holder_view_stop_point_date_divider"
+        android:layout_marginTop="3dp"
         android:gravity="center"
         android:text="2018年08月26日"
         android:textSize="12sp" />
@@ -41,47 +42,66 @@
         app:cv_corner_size="5dp">
 
         <com.hlk.hlklib.lib.view.CorneredView
+            android:id="@+id/ui_holder_view_stop_point_stop_length_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.9"
+            android:layout_weight="1.2"
             android:gravity="center_vertical"
             android:minHeight="60dp"
             android:orientation="horizontal"
-            app:cv_active_border="@color/colorAccent"
             app:cv_background="@color/colorAccent"
             app:cv_background_type="fill"
             app:cv_border_size="0dp"
             app:cv_left_bottom_corner="5dp"
             app:cv_left_top_corner="5dp"
-            app:cv_normal_border="@color/colorAccent"
             app:cv_right_bottom_corner="0dp"
             app:cv_right_top_corner="0dp">
 
-            <com.hlk.hlklib.lib.view.CustomTextView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
-                android:text="@string/ui_icon_time"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/ui_base_text_size_huge"
-                android:textStyle="bold" />
+                android:minHeight="60dp">
 
-            <TextView
-                android:id="@+id/ui_holder_view_stop_point_stop_length"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="center"
-                android:padding="3dp"
-                android:singleLine="true"
-                android:text="1小时30分30秒"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ui_base_text_size_max"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center_horizontal"
+                    android:text="停车等待时间"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/ui_base_text_size_little" />
+
+                <com.hlk.hlklib.lib.view.CustomTextView
+                    android:id="@+id/ui_holder_view_stop_point_stop_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/ui_icon_time"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/ui_base_text_size_huge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ui_holder_view_stop_point_stop_length"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_toEndOf="@+id/ui_holder_view_stop_point_stop_icon"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:singleLine="true"
+                    android:text="30分30秒"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/ui_base_text_size_small" />
+            </RelativeLayout>
+
         </com.hlk.hlklib.lib.view.CorneredView>
 
         <LinearLayout
@@ -94,6 +114,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <com.hlk.hlklib.lib.view.CustomTextView
@@ -106,9 +127,19 @@
                     android:textColor="@color/colorCaution" />
 
                 <TextView
-                    android:id="@+id/ui_holder_view_stop_point_stop_time"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:singleLine="true"
+                    android:text="停车"
+                    android:textColor="@color/colorCaution"
+                    android:textSize="@dimen/ui_base_text_size_small" />
+
+                <TextView
+                    android:id="@+id/ui_holder_view_stop_point_stop_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:singleLine="true"
                     android:text="13:30:00"
                     android:textColor="@color/colorCaution"
@@ -132,23 +163,47 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/ui_holder_view_stop_point_restart_time"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:singleLine="true"
+                    android:text="起动"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/ui_base_text_size_small" />
+
+                <TextView
+                    android:id="@+id/ui_holder_view_stop_point_restart_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="13:30:30"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/ui_base_text_size_small" />
             </LinearLayout>
         </LinearLayout>
 
-        <com.hlk.hlklib.lib.view.CustomTextView
+        <LinearLayout
             android:id="@+id/ui_holder_view_stop_point_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:gravity="center"
-            android:text="@string/ui_icon_map"
-            android:textSize="@dimen/ui_base_text_size_max" />
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="看地图"
+                android:textSize="@dimen/ui_base_text_size_little" />
+
+            <com.hlk.hlklib.lib.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/ui_icon_map"
+                android:textSize="@dimen/ui_base_text_size_max" />
+        </LinearLayout>
+
     </com.hlk.hlklib.lib.view.CorneredView>
 
 </RelativeLayout>

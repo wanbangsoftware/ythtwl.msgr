@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.hlk.ythtwl.msgr.R;
+import com.hlk.ythtwl.msgr.helper.StringHelper;
 import com.hlk.ythtwl.msgr.orm.Fields;
 import com.litesuits.orm.db.annotation.Column;
 import com.litesuits.orm.db.annotation.PrimaryKey;
@@ -28,6 +29,10 @@ public abstract class Model implements Parcelable {
                 super.setId(R.string.ui_base_text_nothing_more);
             }
         };
+    }
+
+    public static boolean isEmpty(String text) {
+        return StringHelper.isEmpty(text, false);
     }
 
     @PrimaryKey(AssignType.BY_MYSELF)

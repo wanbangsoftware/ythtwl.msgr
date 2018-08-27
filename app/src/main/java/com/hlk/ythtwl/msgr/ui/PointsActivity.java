@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -64,12 +65,16 @@ public class PointsActivity extends BaseActivity {
     private void initializeAdapter() {
         if (null == mAdapter) {
             mAdapter = new PointAdapter();
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(mAdapter);
             Intent intent = getIntent();
             mMsgr = intent.getParcelableExtra(PARAM_MSGR);
             if (null != mMsgr) {
                 toolbar.setTitle(getString(R.string.activity_title_map1, mMsgr.getLicense()));
                 for (Point point : mMsgr.getPoints()) {
+                    if (0L == point.getId()) {
+                        point.setId(point.getStop());
+                    }
                     mAdapter.add(point);
                 }
             }

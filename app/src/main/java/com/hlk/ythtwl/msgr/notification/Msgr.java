@@ -2,7 +2,9 @@ package com.hlk.ythtwl.msgr.notification;
 
 import android.os.Parcel;
 
+import com.google.gson.reflect.TypeToken;
 import com.hlk.ythtwl.msgr.model.Dao;
+import com.hlk.ythtwl.msgr.model.Json;
 import com.hlk.ythtwl.msgr.model.Model;
 import com.hlk.ythtwl.msgr.model.Point;
 import com.hlk.ythtwl.msgr.orm.Fields;
@@ -28,6 +30,16 @@ import java.util.List;
  */
 @Table(Tables.MESSAGE)
 public class Msgr extends Model implements MsgAttachment {
+
+    public static Msgr fromJson(String json) {
+        return Json.gson().fromJson(json, new TypeToken<Msgr>() {
+        }.getType());
+    }
+
+    public static ArrayList<Msgr> fromJsonToList(String json) {
+        return Json.gson().fromJson(json, new TypeToken<ArrayList<Msgr>>() {
+        }.getType());
+    }
 
     public static void save(Msgr msg) {
         new Dao<>(Msgr.class).save(msg);

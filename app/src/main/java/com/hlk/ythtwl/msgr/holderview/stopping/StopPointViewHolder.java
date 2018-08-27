@@ -1,12 +1,14 @@
 package com.hlk.ythtwl.msgr.holderview.stopping;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
 import com.hlk.hlklib.lib.inject.Click;
 import com.hlk.hlklib.lib.inject.ViewId;
 import com.hlk.hlklib.lib.inject.ViewUtility;
+import com.hlk.hlklib.lib.view.CorneredView;
 import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.etc.Utils;
 import com.hlk.ythtwl.msgr.helper.StringHelper;
@@ -30,6 +32,8 @@ public class StopPointViewHolder extends BaseViewHolder {
     private View dateDivider;
     @ViewId(R.id.ui_holder_view_stop_point_date)
     private TextView dateView;
+    @ViewId(R.id.ui_holder_view_stop_point_stop_length_layout)
+    private CorneredView lengthLayout;
     @ViewId(R.id.ui_holder_view_stop_point_stop_length)
     private TextView lengthView;
     @ViewId(R.id.ui_holder_view_stop_point_stop_time)
@@ -43,10 +47,11 @@ public class StopPointViewHolder extends BaseViewHolder {
     }
 
     public void showContent(Point point) {
-        dateView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_date_fmt), point.getStop()));
+        dateView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_date_fmt), point.getStop() * 1000));
         lengthView.setText(formatLength(point.getLen()));
-        stopTimeView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_time_fmt), point.getStop()));
-        startTimeView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_time_fmt), point.getStop()));
+        lengthLayout.setBackground(ContextCompat.getColor(lengthLayout.getContext(), (point.getLen() > 120 ? R.color.colorAccent : R.color.colorLicenseBlue)));
+        stopTimeView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_time_fmt), point.getStop() * 1000));
+        startTimeView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_time_fmt), point.getRestart() * 1000));
     }
 
     private String formatLength(long length) {
@@ -61,7 +66,11 @@ public class StopPointViewHolder extends BaseViewHolder {
             ret = format("%s%d分", ret, minutes);
         }
         if (seconds > 0) {
-            ret = format("%s%d秒", ret, seconds);
+            if (minutes > 0 || hours > 0) {
+                ret = format("%s%02d秒", ret, seconds);
+            } else {
+                ret = format("%s%d秒", ret, seconds);
+            }
         }
         return ret;
     }

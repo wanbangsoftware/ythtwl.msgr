@@ -220,14 +220,13 @@ public class Nim extends BAM {
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(new Observer<CustomNotification>() {
             @Override
             public void onEvent(CustomNotification message) {
-                log("notification: " + message.getContent() + " from :" + message.getSessionId() + "/" + message.getSessionType());
+                // log("notification: " + message.getContent() + " from :" + message.getSessionId() + "/" + message.getSessionType());
                 // 在这里处理自定义通知。
                 String json = message.getContent();
                 if (!isEmpty(json)) {
                     log(json);
                     // {"id":1511182986,"license":"鲁F64942","latitude":37.561668,"longitude":121.18732,"status":2,"begin":"2017-11-20 21:05:00","times":756,"name1":"王撕葱","phone1":"13999999999","name2":"王建玲","phone2":"13999999998"}
-                    Msgr msg = Json.gson().fromJson(json, new TypeToken<Msgr>() {
-                    }.getType());
+                    Msgr msg = Msgr.fromJson(json);
                     if (null != msg) {
                         if (msg.getPoints().size() > 0) {
                             for (Point point : msg.getPoints()) {

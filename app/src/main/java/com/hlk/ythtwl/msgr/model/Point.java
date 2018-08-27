@@ -2,6 +2,8 @@ package com.hlk.ythtwl.msgr.model;
 
 import android.os.Parcel;
 
+import java.io.Serializable;
+
 /**
  * <b>功能描述：</b><br />
  * <b>创建作者：</b>SYSTEM <br />
@@ -12,7 +14,9 @@ import android.os.Parcel;
  * <b>修改人员：</b><br />
  * <b>修改备注：</b><br />
  */
-public class Point extends Model {
+public class Point extends Model implements Serializable {
+
+    private static final long serialVersionUID = -6467389520914620287L;
 
     public Point() {
         super();

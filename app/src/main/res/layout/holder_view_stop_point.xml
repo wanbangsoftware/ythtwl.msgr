@@ -121,8 +121,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="3dp"
-                    android:gravity="center"
-                    android:minWidth="@dimen/ui_base_text_size_large"
+                    android:gravity="end"
+                    android:minWidth="25dp"
                     android:text="@string/ui_icon_waiting"
                     android:textColor="@color/colorCaution" />
 
@@ -157,8 +157,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="3dp"
-                    android:gravity="center"
-                    android:minWidth="@dimen/ui_base_text_size_large"
+                    android:gravity="end"
+                    android:minWidth="25dp"
                     android:text="@string/ui_icon_running"
                     android:textColor="@color/colorPrimary" />
 
@@ -180,6 +180,20 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/ui_base_text_size_small" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/ui_holder_view_stop_point_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="2dp"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:singleLine="true"
+                android:text="山东省烟台市开发区长江路垃圾啊看见对方金克拉锻炼腹肌垃圾啊几点几分"
+                android:textColor="@color/textColorHint"
+                android:textSize="@dimen/ui_base_text_size_little" />
         </LinearLayout>
 
         <LinearLayout

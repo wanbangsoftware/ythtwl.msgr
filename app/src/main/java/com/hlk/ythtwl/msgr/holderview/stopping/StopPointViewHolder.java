@@ -5,12 +5,14 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
+import com.amap.api.services.core.LatLonPoint;
 import com.hlk.hlklib.lib.inject.Click;
 import com.hlk.hlklib.lib.inject.ViewId;
 import com.hlk.hlklib.lib.inject.ViewUtility;
 import com.hlk.hlklib.lib.view.CorneredView;
 import com.hlk.ythtwl.msgr.R;
 import com.hlk.ythtwl.msgr.etc.Utils;
+import com.hlk.ythtwl.msgr.helper.GeocodeHelper;
 import com.hlk.ythtwl.msgr.helper.StringHelper;
 import com.hlk.ythtwl.msgr.holderview.BaseViewHolder;
 import com.hlk.ythtwl.msgr.model.Point;
@@ -40,6 +42,8 @@ public class StopPointViewHolder extends BaseViewHolder {
     private TextView stopTimeView;
     @ViewId(R.id.ui_holder_view_stop_point_restart_time)
     private TextView startTimeView;
+    @ViewId(R.id.ui_holder_view_stop_point_address)
+    private TextView addressView;
 
     public StopPointViewHolder(View itemView, Context activity) {
         super(itemView, activity);
@@ -49,9 +53,17 @@ public class StopPointViewHolder extends BaseViewHolder {
     public void showContent(Point point) {
         dateView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_date_fmt), point.getStop() * 1000));
         lengthView.setText(formatLength(point.getLen()));
+        lengthView.setSelected(true);
         lengthLayout.setBackground(ContextCompat.getColor(lengthLayout.getContext(), (point.getLen() > 120 ? R.color.colorAccent : R.color.colorLicenseBlue)));
         stopTimeView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_time_fmt), point.getStop() * 1000));
         startTimeView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_time_fmt), point.getRestart() * 1000));
+        addressView.setSelected(true);
+        GeocodeHelper.helper(context()).setOnGeoCodeSearchedListener(new GeocodeHelper.OnGeoCodeSearchedListener() {
+            @Override
+            public void onSearched(String fullAddress) {
+                addressView.setText(fullAddress.replace("山东省", ""));
+            }
+        }).tryReverseGeoCode(new LatLonPoint(point.getLat(), point.getLng()));
     }
 
     private String formatLength(long length) {

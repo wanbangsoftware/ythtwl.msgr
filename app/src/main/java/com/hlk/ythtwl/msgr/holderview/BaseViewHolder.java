@@ -36,6 +36,10 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+    protected Context context() {
+        return context.get();
+    }
+
     protected boolean isEmpty(String text) {
         return StringHelper.isEmpty(text);
     }

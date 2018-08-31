@@ -54,6 +54,13 @@ public class PointsActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ViewUtility.bind(this);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override

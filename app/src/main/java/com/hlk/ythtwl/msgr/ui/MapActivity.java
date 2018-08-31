@@ -26,6 +26,7 @@ import com.hlk.hlklib.lib.inject.Click;
 import com.hlk.hlklib.lib.inject.ViewId;
 import com.hlk.hlklib.lib.inject.ViewUtility;
 import com.hlk.ythtwl.msgr.R;
+import com.hlk.ythtwl.msgr.helper.GeocodeHelper;
 import com.hlk.ythtwl.msgr.helper.SnackbarHelper;
 import com.hlk.ythtwl.msgr.helper.ToastHelper;
 import com.hlk.ythtwl.msgr.notification.Msgr;
@@ -210,7 +211,8 @@ public class MapActivity extends BaseActivity {
                         @Override
                         public void onFinish() {
                             //mAMap.animateCamera(CameraUpdateFactory.zoomTo(dftZoomLevel), duration(), null);
-                            tryReverseGeoCode(new LatLonPoint(pos.latitude, pos.longitude));
+                            GeocodeHelper.helper(MapActivity.this).setOnGeoCodeSearchedListener(listener).
+                                    tryReverseGeoCode(new LatLonPoint(pos.latitude, pos.longitude));
                         }
 
                         @Override
@@ -223,36 +225,10 @@ public class MapActivity extends BaseActivity {
         }
     }
 
-    //***********************************反转地址服务
-    // 地址反转服务
-    protected GeocodeSearch mGeoCoder;
-
-    /**
-     * 反转编码地理位置
-     */
-    protected void tryReverseGeoCode(LatLonPoint location) {
-        if (null == mGeoCoder) {
-            // 创建GeoCoder实例对象
-            mGeoCoder = new GeocodeSearch(this);
-            // 设置查询结果监听者
-            mGeoCoder.setOnGeocodeSearchListener(onGeocodeSearchListener);
-        }
-        // 发起反地理编码请求(经纬度->地址信息)
-        RegeocodeQuery query = new RegeocodeQuery(location, 200, GeocodeSearch.AMAP);
-        mGeoCoder.getFromLocationAsyn(query);
-    }
-
-    private GeocodeSearch.OnGeocodeSearchListener onGeocodeSearchListener = new GeocodeSearch.OnGeocodeSearchListener() {
-
+    private GeocodeHelper.OnGeoCodeSearchedListener listener = new GeocodeHelper.OnGeoCodeSearchedListener() {
         @Override
-        public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-            addressView.setText(getString(R.string.ui_map_address_view_text, regeocodeResult.getRegeocodeAddress().getFormatAddress()));
-        }
-
-        @Override
-        public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-
+        public void onSearched(String fullAddress) {
+            addressView.setText(getString(R.string.ui_map_address_view_text, fullAddress));
         }
     };
-
 }

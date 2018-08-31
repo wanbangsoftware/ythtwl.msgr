@@ -41,6 +41,7 @@ import com.hlk.ythtwl.msgr.permission.MPermission;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionDenied;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionGranted;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionNeverAskAgain;
+import com.hlk.ythtwl.msgr.view.SwipeItemLayout;
 
 import java.util.Iterator;
 import java.util.List;
@@ -250,6 +251,7 @@ public class MainActivity extends BaseActivity {
     private void initializeAdapter() {
         if (null == mAdapter) {
             mAdapter = new LicenseAdapter();
+            recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(this));
             recyclerView.setAdapter(mAdapter);
             List<Msgr> msgrs = Msgr.query();
             if (null != msgrs) {
@@ -348,7 +350,7 @@ public class MainActivity extends BaseActivity {
                 case VT_TRUCK:
                     return R.layout.holder_view_truck_item;
             }
-            return R.layout.holder_view_alarm_item;
+            return R.layout.holder_view_alarm_item_deletable;
         }
 
         @Override

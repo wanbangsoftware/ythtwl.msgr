@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -41,8 +40,8 @@ import com.hlk.ythtwl.msgr.permission.MPermission;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionDenied;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionGranted;
 import com.hlk.ythtwl.msgr.permission.annotation.OnMPermissionNeverAskAgain;
-import com.hlk.ythtwl.msgr.view.SwipeItemLayout;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -63,8 +62,8 @@ public class MainActivity extends BaseActivity {
     private OnMsgrEventListener msgrEventListener = new OnMsgrEventListener() {
         @Override
         public void onEvent(Msgr msgr) {
-            handleMsgr(msgr);
-//            if (null != mAdapter) {
+            if (null != mAdapter) {
+                handleMsgr(msgr);
 //                int index = mAdapter.indexOf(msgr);
 //                if (index >= 0) {
 //                    mAdapter.update(msgr);
@@ -72,7 +71,7 @@ public class MainActivity extends BaseActivity {
 //                    mAdapter.add(msgr, mAdapter.getItemCount() - 1);
 //                }
 //                smoothScrollToBottom(recyclerView, mAdapter.getItemCount() - 1);
-//            }
+            }
         }
     };
 
@@ -248,59 +247,96 @@ public class MainActivity extends BaseActivity {
         }, null);
     }
 
+    private Msgr isMsgExists(String license) {
+        Iterator<Model> iterator = mAdapter.iterator();
+        while (iterator.hasNext()) {
+            Model model = iterator.next();
+            if (model instanceof Msgr) {
+                Msgr msgr = (Msgr) model;
+                if (msgr.getLicense().equals(license)) {
+                    return msgr;
+                }
+            }
+        }
+        return null;
+    }
+
+    private Truck isTruckExists(String license) {
+        Iterator<Model> iterator = mAdapter.iterator();
+        while (iterator.hasNext()) {
+            Model model = iterator.next();
+            if (model instanceof Truck) {
+                Truck truck = (Truck) model;
+                if (truck.getLicense().equals(license)) {
+                    return truck;
+                }
+            }
+        }
+        return null;
+    }
+
     private void initializeAdapter() {
         if (null == mAdapter) {
             mAdapter = new LicenseAdapter();
-            recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(this));
+            //recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(this));
             recyclerView.setAdapter(mAdapter);
             List<Msgr> msgrs = Msgr.query();
             if (null != msgrs) {
+                ArrayList<Model> list = new ArrayList<>();
                 for (Msgr msgr : msgrs) {
-                    Truck truck = new Truck();
-                    truck.setLicense(msgr.getLicense());
-                    int index = mAdapter.indexOf(truck);
-                    if (index >= 0) {
-                        truck = (Truck) mAdapter.get(index);
-                        truck.setCount(truck.getCount() + 1);
+                    int count = getLicenses(msgr.getLicense(), msgrs);
+                    if (count > 0) {
+                        Truck truck = new Truck();
+                        truck.setLicense(msgr.getLicense());
+                        truck.setCount(count);
                         truck.setUnread(truck.getUnread() + (msgr.isUnread() ? 1 : 0));
                         truck.setLastTime(msgr.getId());
-                        mAdapter.notifyItemChanged(index);
-                    } else {
-                        index = mAdapter.indexOfLicense(msgr.getLicense());
-                        if (index >= 0) {
-                            truck.setCount(2);
-                            truck.setUnread(truck.getUnread() + (msgr.isUnread() ? 1 : 0));
-                            truck.setLastTime(msgr.getId());
-                            mAdapter.replace(index, truck);
+                        int index = list.indexOf(truck);
+                        if (index < 0) {
+                            list.add(truck);
                         } else {
-                            mAdapter.update(msgr);
+                            list.set(index, truck);
                         }
+                    } else {
+                        list.add(msgr);
                     }
                 }
+                mAdapter.add(list);
             }
             mAdapter.update(nothingMore);
         }
     }
 
+    private int getLicenses(String license, List<Msgr> list) {
+        int cnt = 0;
+        for (Msgr msgr : list) {
+            if (!isEmpty(msgr.getLicense()) && msgr.getLicense().equals(license)) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
     private void handleMsgr(Msgr msgr) {
-        Truck truck = new Truck();
-        truck.setLicense(msgr.getLicense());
+        Truck truck = isTruckExists(msgr.getLicense());
         int index = mAdapter.indexOf(truck);
-        if (index >= 0) {
-            truck = (Truck) mAdapter.get(index);
+        if (null != truck) {
             truck.setCount(truck.getCount() + 1);
             truck.setUnread(truck.getUnread() + (msgr.isUnread() ? 1 : 0));
             truck.setLastTime(msgr.getId());
             mAdapter.notifyItemChanged(index);
         } else {
-            index = mAdapter.indexOfLicense(msgr.getLicense());
-            if (index >= 0) {
+            Msgr m = isMsgExists(msgr.getLicense());
+            if (null != m) {
+                truck = new Truck();
+                truck.setLicense(msgr.getLicense());
                 truck.setCount(2);
                 truck.setUnread(truck.getUnread() + (msgr.isUnread() ? 1 : 0));
                 truck.setLastTime(msgr.getId());
+                index = mAdapter.indexOf(m);
                 mAdapter.replace(index, truck);
             } else {
-                mAdapter.add(msgr, mAdapter.getItemCount() - 1);
+                mAdapter.update(msgr);
             }
         }
     }
@@ -371,22 +407,6 @@ public class MainActivity extends BaseActivity {
             } else if (holder instanceof TruckViewHolder) {
                 ((TruckViewHolder) holder).showContent((Truck) item);
             }
-        }
-
-        int indexOfLicense(String license) {
-            Iterator<Model> iterable = iterator();
-            int index = 0;
-            while (iterable.hasNext()) {
-                Model model = iterable.next();
-                if (model instanceof Msgr) {
-                    Msgr msgr = (Msgr) model;
-                    if (msgr.getLicense().equals(license)) {
-                        return index;
-                    }
-                }
-                index++;
-            }
-            return -1;
         }
 
         @Override

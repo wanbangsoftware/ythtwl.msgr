@@ -56,13 +56,13 @@ public class Truck extends Model {
         }
     };
 
-    public boolean equals(Truck truck) {
-        return null != truck && truck.getLicense().equals(license);
-    }
-
     @Override
     public boolean equals(Object object) {
-        return null != object && (getClass() == object.getClass()) && (object instanceof Truck) && equals((Truck) object);
+        if (object instanceof Truck) {
+            Truck truck = (Truck) object;
+            return !isEmpty(truck.getLicense()) && truck.getLicense().equals(this.license);
+        }
+        return false;
     }
 
     // 车牌

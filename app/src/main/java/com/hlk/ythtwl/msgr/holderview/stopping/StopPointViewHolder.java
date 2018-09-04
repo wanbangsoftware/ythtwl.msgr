@@ -2,6 +2,7 @@ package com.hlk.ythtwl.msgr.holderview.stopping;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -52,8 +53,7 @@ public class StopPointViewHolder extends BaseViewHolder {
 
     public void showContent(Point point) {
         dateView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_date_fmt), point.getStop() * 1000));
-        lengthView.setText(formatLength(point.getLen()));
-        lengthView.setSelected(true);
+        lengthView.setText(Html.fromHtml(formatLength(point.getLen())));
         lengthLayout.setBackground(ContextCompat.getColor(lengthLayout.getContext(), (point.getLen() > 120 ? R.color.colorAccent : R.color.colorLicenseBlue)));
         stopTimeView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_time_fmt), point.getStop() * 1000));
         startTimeView.setText(Utils.format(StringHelper.getString(R.string.ui_stop_point_time_fmt), point.getRestart() * 1000));
@@ -73,6 +73,9 @@ public class StopPointViewHolder extends BaseViewHolder {
         String ret = "";
         if (hours > 0) {
             ret = format("%d小时", hours);
+            if (minutes > 0 || seconds > 0) {
+                ret += "<br/>";
+            }
         }
         if (minutes > 0) {
             ret = format("%s%d分", ret, minutes);

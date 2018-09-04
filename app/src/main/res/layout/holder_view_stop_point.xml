@@ -91,12 +91,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="5dp"
                     android:layout_toEndOf="@+id/ui_holder_view_stop_point_stop_icon"
-                    android:ellipsize="marquee"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:singleLine="true"
                     android:text="30分30秒"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/ui_base_text_size_small" />
